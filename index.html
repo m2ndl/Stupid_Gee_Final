@@ -55,7 +55,6 @@
             flex-direction: column;
             color: #f3f4f6;
         }
-        /* Desktop state: visible by default, hidden when collapsed */
         .sidebar.collapsed { transform: translateX(-100%); }
 
         .main-content {
@@ -97,7 +96,6 @@
         .doc-content ol { list-style-type: decimal; }
         .doc-content li { margin-bottom: 0.75rem; line-height: 1.7; }
         
-        /* Markers */
         .doc-content ul > li::marker { color: var(--accent); font-weight: bold; }
         .doc-content ol > li::marker { color: var(--text-accent); font-weight: bold; }
 
@@ -136,6 +134,7 @@
 
         .term { color: #1a202c; font-weight: 700; font-size: 1.1em; }
         strong { color: #1a202c; font-weight: 700; }
+        em { color: var(--text-accent); font-style: italic; font-weight: 600; }
 
         .text-block { margin-bottom: 1.25rem; line-height: 1.8; color: var(--text-secondary); }
         .label-highlight {
@@ -161,37 +160,64 @@
             width: 8px; height: 8px; border-radius: 50%; background-color: var(--accent); box-shadow: 0 0 8px var(--accent);
         }
 
-        /* --- Font Controls --- */
-        .font-controls {
-            display: flex; gap: 8px; align-items: center;
-            background: #1f2937; padding: 6px 12px; border-radius: 8px; margin-top: 10px;
-        }
-        .font-btn {
-            background: #374151; color: white; border: none; border-radius: 4px;
-            width: 28px; height: 28px; cursor: pointer; font-size: 0.9rem; font-weight: 600;
-            transition: background 0.2s; display: flex; align-items: center; justify-content: center;
-        }
+        .font-controls { display: flex; gap: 8px; align-items: center; background: #1f2937; padding: 6px 12px; border-radius: 8px; margin-top: 10px; }
+        .font-btn { background: #374151; color: white; border: none; border-radius: 4px; width: 28px; height: 28px; cursor: pointer; font-size: 0.9rem; font-weight: 600; transition: background 0.2s; display: flex; align-items: center; justify-content: center; }
         .font-btn:hover { background: #4b5563; }
 
-        /* Toggle Button */
-        .toggle-btn {
-            position: fixed; top: 1.25rem; left: 1.25rem; z-index: 60;
-            background: #1f2937; padding: 0.6rem; border-radius: 50%;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.3); cursor: pointer; border: 1px solid #374151; color: white;
-        }
+        .toggle-btn { position: fixed; top: 1.25rem; left: 1.25rem; z-index: 60; background: #1f2937; padding: 0.6rem; border-radius: 50%; box-shadow: 0 4px 6px rgba(0,0,0,0.3); cursor: pointer; border: 1px solid #374151; color: white; }
 
         .hidden-chapter { display: none; }
         .active-chapter { display: block; animation: fadeIn 0.4s ease-out; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* --- MOBILE RESPONSIVENESS --- */
+        /* --- Active Recall Styles --- */
+        .recall-textarea {
+            width: 100%;
+            min-height: 120px;
+            padding: 1rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            font-family: var(--font-sans);
+            font-size: 1rem;
+            transition: border-color 0.2s;
+            resize: vertical;
+            background-color: #fcfcfc;
+        }
+        .recall-textarea:focus {
+            outline: none;
+            border-color: #3182ce;
+            background-color: #fff;
+            box-shadow: 0 0 0 3px rgba(49, 130, 206, 0.1);
+        }
+        .recall-label {
+            display: block;
+            font-family: var(--font-serif);
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: #2d3748;
+            margin-bottom: 0.5rem;
+            margin-top: 1.5rem;
+        }
+        .recall-controls {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .recall-select {
+            padding: 8px 12px;
+            border-radius: 6px;
+            border: 1px solid #cbd5e0;
+            background: white;
+            font-weight: 600;
+            color: #4a5568;
+        }
+
         @media (max-width: 768px) {
-            /* Mobile Default: Hidden off-screen */
             .sidebar { transform: translateX(-100%); }
-            
-            /* Mobile Open State: Visible */
             .sidebar.mobile-open { transform: translateX(0); }
-            
             .main-content { margin-left: 0; padding: 5rem 1rem; }
             .doc-content { padding: 2rem 1.5rem; }
         }
@@ -216,11 +242,14 @@
         </div>
         
         <div class="flex-1 overflow-y-auto py-4 space-y-1">
+            <div class="nav-item" onclick="showRecall()" id="nav-recall" style="color: #60a5fa; margin-bottom: 1rem;">
+                <span class="mr-2">✍️</span> Active Recall Mode
+            </div>
             <div class="nav-item" onclick="showChapter('ch6')" id="nav-ch6">Ch 6: Conversations</div>
             <div class="nav-item" onclick="showChapter('ch7')" id="nav-ch7">Ch 7: Applying Tools</div>
             <div class="nav-item" onclick="showChapter('ch8')" id="nav-ch8">Ch 8: Basic Meanings</div>
             <div class="nav-item" onclick="showChapter('ch9')" id="nav-ch9">Ch 9: Figured Worlds</div>
-            <div class="nav-item" onclick="showChapter('ch10')" id="nav-ch10">Ch 10: Politics</div>
+            <div class="nav-item" onclick="showChapter('ch10')" id="nav-ch10">Ch 10: More Worlds</div>
             <div class="nav-item" onclick="showChapter('ch11')" id="nav-ch11">Ch 11: Context</div>
             <div class="nav-item" onclick="showChapter('ch12')" id="nav-ch12">Ch 12: Transcription</div>
             <div class="nav-item" onclick="showChapter('ch13')" id="nav-ch13">Ch 13: Processing</div>
@@ -236,7 +265,37 @@
         <!-- Welcome -->
         <div id="welcome" class="active-chapter doc-content border-t-0 border-l-4 border-gray-800">
             <h1 class="doc-title text-4xl">Study Guide</h1>
-            <p class="text-lg text-gray-600 mt-4 leading-relaxed">Select a chapter from the sidebar to begin.</p>
+            <p class="text-lg text-gray-600 mt-4 leading-relaxed">Select a chapter from the sidebar to begin reading, or select <strong>Active Recall Mode</strong> to test your memory by writing.</p>
+        </div>
+
+        <!-- Active Recall Section -->
+        <div id="recall-section" class="hidden-chapter doc-content border-t-0 border-l-4 border-blue-500">
+            <h1 class="doc-title text-3xl mb-2">Active Recall Workspace</h1>
+            <p class="text-gray-500 mb-6">Select a chapter to test your knowledge. Write everything you remember for each prompt. Your notes are saved automatically to your device.</p>
+            
+            <div class="recall-controls">
+                <select id="recall-select" class="recall-select" onchange="loadRecallPrompts()">
+                    <option value="" disabled selected>-- Select a Chapter --</option>
+                    <option value="ch6">Ch 6: Conversations</option>
+                    <option value="ch7">Ch 7: Applying Tools</option>
+                    <option value="ch8">Ch 8: Basic Meanings</option>
+                    <option value="ch9">Ch 9: Figured Worlds</option>
+                    <option value="ch10">Ch 10: More Worlds</option>
+                    <option value="ch11">Ch 11: Context</option>
+                    <option value="ch12">Ch 12: Transcription</option>
+                    <option value="ch13">Ch 13: Processing</option>
+                    <option value="ch14">Ch 14: Meaning & Choice</option>
+                    <option value="ch15">Ch 15: Analysis 1</option>
+                    <option value="ch16">Ch 16: Analysis 2</option>
+                    <option value="ch17">Ch 17: Multimodality</option>
+                </select>
+                <button onclick="clearRecallForChapter()" class="text-sm text-red-500 font-semibold hover:text-red-700 ml-auto">Clear Notes</button>
+            </div>
+
+            <div id="recall-container">
+                <!-- Prompts will be injected here via JS -->
+                <p class="text-center text-gray-400 mt-10">Please select a chapter above to start.</p>
+            </div>
         </div>
 
         <!-- Chapter 6 -->
@@ -819,29 +878,29 @@
                 <h2 class="doc-section-title">Part 1: Key Definitions</h2>
                 <ul class="definition-list">
                     <li class="definition-card"><span class="term">Speech Spurts (Idea Units / Tone Units / Lines):</span> Thanks to the biological limits of the human brain and vocal system, speech is produced in small spurts, usually one clause long.
-                        <ol>
+                        <ol class="sub-list-numbered">
                             <li><em>Function:</em> Each spurt represents one <strong>focus of consciousness</strong>.</li>
                             <li><em>Mind's Eye Metaphor:</em> Just as the eye fixates on one small part of a scene at a time, the mind focuses on one small piece of information at a time.</li>
                         </ol>
                     </li>
                     <li class="definition-card"><span class="term">Stanza:</span> A larger unit of speech made up of a "clump" of lines that deal with a single topic, event, image, perspective, or theme.
-                        <ol>
+                        <ol class="sub-list-numbered">
                             <li><em>Structure:</em> When the character, time, or event changes, a new Stanza begins. Stanzas function like "boxes" holding related lines.</li>
                         </ol>
                     </li>
                     <li class="definition-card"><span class="term">Focus Stress:</span> The most prominent level of stress in a line (intonation contour).
-                        <ol>
+                        <ol class="sub-list-numbered">
                             <li><em>Rule:</em> In English, the focus stress typically falls on the <strong>last content word</strong> (marking all new info). If it falls elsewhere, it marks a specific contrast.</li>
                         </ol>
                     </li>
                     <li class="definition-card"><span class="term">New vs. Old Information:</span>
-                        <ol>
+                        <ol class="sub-list-numbered">
                             <li><strong>New Information:</strong> Unpredictable info (stressed).</li>
                             <li><strong>Old Information:</strong> Predictable or previously mentioned info (unstressed/backgrounded).</li>
                         </ol>
                     </li>
                     <li class="definition-card"><span class="term">Macro-Structure:</span> The larger "body parts" of a narrative or argument. For a story, these are typically:
-                        <ol>
+                        <ol class="sub-list-numbered">
                             <li><em>Setting:</em> Time/Place/Characters.</li>
                             <li><em>Catalyst:</em> The problem/event that starts the action.</li>
                             <li><em>Crisis:</em> The peak of the problem.</li>
@@ -918,13 +977,13 @@
                         <ul><li>Example: "John married Mary" (John's perspective) vs. "Mary married John" (Mary's perspective).</li></ul>
                     </li>
                     <li class="definition-card"><span class="term">Topic vs. Comment:</span>
-                        <ul>
+                        <ul class="sub-list-bullet">
                             <li><strong>Topic (Subject):</strong> What the clause is about.</li>
                             <li><strong>Comment (Predicate):</strong> What is said about the topic. Choosing a different topic changes the perspective of the sentence.</li>
                         </ul>
                     </li>
                     <li class="definition-card"><span class="term">Asserted vs. Assumed Information:</span>
-                        <ul>
+                        <ul class="sub-list-bullet">
                             <li><strong>Asserted (Independent Clause):</strong> Foregrounded info that is open to debate.</li>
                             <li><strong>Assumed (Dependent Clause):</strong> Backgrounded info that the reader is expected to take for granted.</li>
                         </ul>
@@ -1133,7 +1192,7 @@
                         <ul><li>Examples: Opera, Video Games, Textbooks with diagrams, Face-to-Face conversation (which uses gesture/gaze).</li></ul>
                     </li>
                     <li class="definition-card"><span class="term">Mode (Gunther Kress):</span> A "socially and culturally shaped resource for making meaning."
-                        <ol>
+                        <ol class="sub-list-numbered">
                             <li><em>The 5 Modes (New London Group):</em> Visual, Linguistic, Spatial, Aural, and Gestural.</li>
                         </ol>
                     </li>
@@ -1144,7 +1203,7 @@
                         </ul>
                     </li>
                     <li class="definition-card"><span class="term">System of Systems (Video Games):</span> Gee defines video games as a complex multimodal system composed of two melded systems:
-                        <ul>
+                        <ul class="sub-list-bullet">
                             <li><strong>The Game World:</strong> The fictional world the player sees/moves in (Graphics, Action).</li>
                             <li><strong>The User Interface:</strong> The HUD, menus, and maps that communicate game data to the player.</li>
                         </ul>
@@ -1232,19 +1291,45 @@
         }
 
         function showChapter(chId) {
+            // Hide all views
             document.querySelectorAll('.active-chapter').forEach(el => {
                 el.classList.remove('active-chapter');
                 el.classList.add('hidden-chapter');
             });
+            document.getElementById('recall-section').classList.add('hidden-chapter');
             
+            // Show new chapter
             const chapter = document.getElementById(chId);
             chapter.classList.remove('hidden-chapter');
             chapter.classList.add('active-chapter');
 
             window.scrollTo({top: 0, behavior: 'smooth'});
 
+            // Nav State
             document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
-            document.getElementById('nav-' + chId).classList.add('active');
+            const navItem = document.getElementById('nav-' + chId);
+            if(navItem) navItem.classList.add('active');
+
+            if (window.innerWidth <= 768) {
+                document.getElementById('sidebar').classList.remove('mobile-open');
+            }
+        }
+
+        function showRecall() {
+            // Hide all chapters
+            document.querySelectorAll('.active-chapter').forEach(el => {
+                el.classList.remove('active-chapter');
+                el.classList.add('hidden-chapter');
+            });
+
+            // Show Recall Section
+            const recall = document.getElementById('recall-section');
+            recall.classList.remove('hidden-chapter');
+            recall.classList.add('active-chapter');
+
+            // Nav State
+            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+            document.getElementById('nav-recall').classList.add('active');
 
             if (window.innerWidth <= 768) {
                 document.getElementById('sidebar').classList.remove('mobile-open');
@@ -1261,6 +1346,82 @@
             if (newSize > 24) newSize = 24;
             
             body.style.fontSize = newSize + 'px';
+        }
+
+        /* --- ACTIVE RECALL LOGIC --- */
+        
+        function loadRecallPrompts() {
+            const chapterId = document.getElementById('recall-select').value;
+            const container = document.getElementById('recall-container');
+            container.innerHTML = ''; // Clear current
+
+            if (!chapterId) return;
+
+            // Find the actual chapter content in the DOM
+            const sourceChapter = document.getElementById(chapterId);
+            if (!sourceChapter) return;
+
+            // 1. Find Part 1 Definitions
+            const definitions = sourceChapter.querySelectorAll('.term, .definition-term');
+            if (definitions.length > 0) {
+                const h2 = document.createElement('h2');
+                h2.className = "text-xl font-bold text-gray-800 mt-6 mb-4 border-b pb-2";
+                h2.innerText = "Part 1: Definitions (Define these terms)";
+                container.appendChild(h2);
+
+                definitions.forEach((term, index) => {
+                    createInputBlock(container, chapterId, `def-${index}`, term.innerText.replace(':', ''));
+                });
+            }
+
+            // 2. Find Part 2 Arguments
+            const arguments = sourceChapter.querySelectorAll('.doc-subtitle, .outline-title-1');
+            if (arguments.length > 0) {
+                const h2 = document.createElement('h2');
+                h2.className = "text-xl font-bold text-gray-800 mt-10 mb-4 border-b pb-2";
+                h2.innerText = "Part 2: Core Arguments (Discuss these topics)";
+                container.appendChild(h2);
+
+                arguments.forEach((arg, index) => {
+                    createInputBlock(container, chapterId, `arg-${index}`, arg.innerText);
+                });
+            }
+        }
+
+        function createInputBlock(container, chId, idSuffix, labelText) {
+            const uniqueKey = `${chId}-${idSuffix}`;
+            
+            const label = document.createElement('label');
+            label.className = "recall-label";
+            label.innerText = labelText;
+            
+            const textarea = document.createElement('textarea');
+            textarea.className = "recall-textarea";
+            textarea.placeholder = "Type what you remember here...";
+            textarea.id = uniqueKey;
+            
+            // Load saved data
+            const savedData = localStorage.getItem(uniqueKey);
+            if (savedData) textarea.value = savedData;
+
+            // Auto-save on type
+            textarea.addEventListener('input', () => {
+                localStorage.setItem(uniqueKey, textarea.value);
+            });
+
+            container.appendChild(label);
+            container.appendChild(textarea);
+        }
+
+        function clearRecallForChapter() {
+            const chapterId = document.getElementById('recall-select').value;
+            if (!chapterId || !confirm("Are you sure you want to clear all your notes for this chapter?")) return;
+
+            const inputs = document.querySelectorAll('#recall-container textarea');
+            inputs.forEach(input => {
+                input.value = '';
+                localStorage.removeItem(input.id);
+            });
         }
     </script>
 </body>
