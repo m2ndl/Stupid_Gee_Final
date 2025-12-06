@@ -21,6 +21,7 @@
             font-family: var(--font-sans);
             color: var(--text-primary);
             background-color: #f8fafc;
+            font-size: 16px;
         }
 
         h1, h2, h3, h4 { font-family: var(--font-serif); }
@@ -54,6 +55,7 @@
             flex-direction: column;
             color: #f3f4f6;
         }
+        /* Desktop state: visible by default, hidden when collapsed */
         .sidebar.collapsed { transform: translateX(-100%); }
 
         .main-content {
@@ -99,17 +101,14 @@
         .doc-content ul > li::marker { color: var(--accent); font-weight: bold; }
         .doc-content ol > li::marker { color: var(--text-accent); font-weight: bold; }
 
-        /* NESTED LISTS (The Fix) */
+        /* Nested Lists */
         .doc-content li > ul, .doc-content li > ol {
-            margin-top: 0.5rem; 
-            margin-bottom: 0.5rem; 
-            padding-left: 2rem; 
-            border-left: 3px solid #e5e7eb; /* Visual guide */
+            margin-top: 0.5rem; margin-bottom: 0.5rem; padding-left: 2rem; border-left: 2px solid #e2e8f0;
         }
-        .doc-content li > ul { list-style-type: circle; } /* Sub-bullet */
-        .doc-content li > ol { list-style-type: decimal; } /* Sub-number */
+        .doc-content li > ul { list-style-type: circle; }
+        .doc-content li > ol { list-style-type: decimal; }
 
-        /* Definition Cards (Part 1 Special Style) */
+        /* Definition Cards */
         .definition-list {
             display: flex;
             flex-direction: column;
@@ -127,21 +126,17 @@
             box-shadow: 0 2px 4px rgba(0,0,0,0.02);
         }
         
-        /* Nested items inside definition cards */
         .definition-card ul {
             margin-top: 1rem;
             margin-bottom: 0;
             padding-left: 1.5rem;
-            border-left: none; /* Reset border for card internals if preferred, or keep */
             list-style-type: disc;
         }
         .definition-card li { margin-bottom: 0.5rem; }
 
-        /* Term Highlight */
         .term { color: #1a202c; font-weight: 700; font-size: 1.1em; }
         strong { color: #1a202c; font-weight: 700; }
 
-        /* --- Text Blocks & Labels (Part 2) --- */
         .text-block { margin-bottom: 1.25rem; line-height: 1.8; color: var(--text-secondary); }
         .label-highlight {
             background-color: var(--highlight);
@@ -152,7 +147,7 @@
             margin-right: 4px;
         }
 
-        /* --- Navigation --- */
+        /* --- Navigation Items --- */
         .nav-item {
             padding: 12px 24px; cursor: pointer; border-left: 4px solid transparent;
             color: #9ca3af; font-weight: 500; transition: all 0.2s; font-size: 0.95rem;
@@ -178,6 +173,7 @@
         }
         .font-btn:hover { background: #4b5563; }
 
+        /* Toggle Button */
         .toggle-btn {
             position: fixed; top: 1.25rem; left: 1.25rem; z-index: 60;
             background: #1f2937; padding: 0.6rem; border-radius: 50%;
@@ -188,9 +184,14 @@
         .active-chapter { display: block; animation: fadeIn 0.4s ease-out; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
+        /* --- MOBILE RESPONSIVENESS --- */
         @media (max-width: 768px) {
+            /* Mobile Default: Hidden off-screen */
             .sidebar { transform: translateX(-100%); }
-            .sidebar.active { transform: translateX(0); }
+            
+            /* Mobile Open State: Visible */
+            .sidebar.mobile-open { transform: translateX(0); }
+            
             .main-content { margin-left: 0; padding: 5rem 1rem; }
             .doc-content { padding: 2rem 1.5rem; }
         }
@@ -258,12 +259,10 @@
                     <li class="definition-card">
                         <span class="term">Intertextuality:</span> 
                         A concept originally from literary studies referring to how texts influence, reference, or echo other texts.
-                        <!-- NESTED LIST CORRECTION START -->
                         <ul>
                             <li><strong>Poststructuralists (Julia Kristeva & Roland Barthes):</strong> They expanded the concept to suggest <em>all</em> texts are intertextual because they draw from pre-existing cultural codes.</li>
                             <li><strong>Norman Fairclough:</strong> Defines it as texts being "full of snatches of other texts" which may be assimilated, contradicted, or ironically echoed.</li>
                         </ul>
-                        <!-- NESTED LIST CORRECTION END -->
                     </li>
                     <li class="definition-card">
                         <span class="term">Dialogism (Mikhail Bakhtin):</span> 
@@ -820,29 +819,29 @@
                 <h2 class="doc-section-title">Part 1: Key Definitions</h2>
                 <ul class="definition-list">
                     <li class="definition-card"><span class="term">Speech Spurts (Idea Units / Tone Units / Lines):</span> Thanks to the biological limits of the human brain and vocal system, speech is produced in small spurts, usually one clause long.
-                        <ol class="sub-list-numbered">
+                        <ol>
                             <li><em>Function:</em> Each spurt represents one <strong>focus of consciousness</strong>.</li>
                             <li><em>Mind's Eye Metaphor:</em> Just as the eye fixates on one small part of a scene at a time, the mind focuses on one small piece of information at a time.</li>
                         </ol>
                     </li>
                     <li class="definition-card"><span class="term">Stanza:</span> A larger unit of speech made up of a "clump" of lines that deal with a single topic, event, image, perspective, or theme.
-                        <ol class="sub-list-numbered">
+                        <ol>
                             <li><em>Structure:</em> When the character, time, or event changes, a new Stanza begins. Stanzas function like "boxes" holding related lines.</li>
                         </ol>
                     </li>
                     <li class="definition-card"><span class="term">Focus Stress:</span> The most prominent level of stress in a line (intonation contour).
-                        <ol class="sub-list-numbered">
+                        <ol>
                             <li><em>Rule:</em> In English, the focus stress typically falls on the <strong>last content word</strong> (marking all new info). If it falls elsewhere, it marks a specific contrast.</li>
                         </ol>
                     </li>
                     <li class="definition-card"><span class="term">New vs. Old Information:</span>
-                        <ol class="sub-list-numbered">
+                        <ol>
                             <li><strong>New Information:</strong> Unpredictable info (stressed).</li>
                             <li><strong>Old Information:</strong> Predictable or previously mentioned info (unstressed/backgrounded).</li>
                         </ol>
                     </li>
                     <li class="definition-card"><span class="term">Macro-Structure:</span> The larger "body parts" of a narrative or argument. For a story, these are typically:
-                        <ol class="sub-list-numbered">
+                        <ol>
                             <li><em>Setting:</em> Time/Place/Characters.</li>
                             <li><em>Catalyst:</em> The problem/event that starts the action.</li>
                             <li><em>Crisis:</em> The peak of the problem.</li>
@@ -919,13 +918,13 @@
                         <ul><li>Example: "John married Mary" (John's perspective) vs. "Mary married John" (Mary's perspective).</li></ul>
                     </li>
                     <li class="definition-card"><span class="term">Topic vs. Comment:</span>
-                        <ul class="sub-list-bullet">
+                        <ul>
                             <li><strong>Topic (Subject):</strong> What the clause is about.</li>
                             <li><strong>Comment (Predicate):</strong> What is said about the topic. Choosing a different topic changes the perspective of the sentence.</li>
                         </ul>
                     </li>
                     <li class="definition-card"><span class="term">Asserted vs. Assumed Information:</span>
-                        <ul class="sub-list-bullet">
+                        <ul>
                             <li><strong>Asserted (Independent Clause):</strong> Foregrounded info that is open to debate.</li>
                             <li><strong>Assumed (Dependent Clause):</strong> Backgrounded info that the reader is expected to take for granted.</li>
                         </ul>
@@ -1134,7 +1133,7 @@
                         <ul><li>Examples: Opera, Video Games, Textbooks with diagrams, Face-to-Face conversation (which uses gesture/gaze).</li></ul>
                     </li>
                     <li class="definition-card"><span class="term">Mode (Gunther Kress):</span> A "socially and culturally shaped resource for making meaning."
-                        <ol class="sub-list-numbered">
+                        <ol>
                             <li><em>The 5 Modes (New London Group):</em> Visual, Linguistic, Spatial, Aural, and Gestural.</li>
                         </ol>
                     </li>
@@ -1145,7 +1144,7 @@
                         </ul>
                     </li>
                     <li class="definition-card"><span class="term">System of Systems (Video Games):</span> Gee defines video games as a complex multimodal system composed of two melded systems:
-                        <ul class="sub-list-bullet">
+                        <ul>
                             <li><strong>The Game World:</strong> The fictional world the player sees/moves in (Graphics, Action).</li>
                             <li><strong>The User Interface:</strong> The HUD, menus, and maps that communicate game data to the player.</li>
                         </ul>
@@ -1220,8 +1219,16 @@
 
     <script>
         function toggleSidebar() {
-            document.getElementById('sidebar').classList.toggle('collapsed');
-            document.getElementById('main').classList.toggle('expanded');
+            const sidebar = document.getElementById('sidebar');
+            const main = document.getElementById('main');
+            
+            // Check if mobile
+            if (window.innerWidth <= 768) {
+                sidebar.classList.toggle('mobile-open');
+            } else {
+                sidebar.classList.toggle('collapsed');
+                main.classList.toggle('expanded');
+            }
         }
 
         function showChapter(chId) {
@@ -1239,8 +1246,8 @@
             document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
             document.getElementById('nav-' + chId).classList.add('active');
 
-            if (window.innerWidth < 768) {
-                toggleSidebar();
+            if (window.innerWidth <= 768) {
+                document.getElementById('sidebar').classList.remove('mobile-open');
             }
         }
 
