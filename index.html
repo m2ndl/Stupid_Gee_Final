@@ -1,0 +1,1260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Discourse Analysis Exam Review</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300;1,400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --sidebar-width: 280px;
+            --font-serif: 'Merriweather', serif;
+            --font-sans: 'Inter', sans-serif;
+            --text-primary: #1a202c;
+            --text-secondary: #4a5568;
+        }
+        
+        body {
+            font-family: var(--font-sans);
+            color: var(--text-primary);
+            background-color: #f8fafc;
+        }
+
+        h1, h2, h3, h4 { font-family: var(--font-serif); }
+
+        /* --- Theme System --- */
+        .theme-ch6  { --accent: #3182ce; --highlight: #ebf8ff; --text-accent: #2c5282; }
+        .theme-ch7  { --accent: #38a169; --highlight: #f0fff4; --text-accent: #276749; }
+        .theme-ch8  { --accent: #805ad5; --highlight: #faf5ff; --text-accent: #553c9a; }
+        .theme-ch9  { --accent: #dd6b20; --highlight: #fffaf0; --text-accent: #9c4221; }
+        .theme-ch10 { --accent: #319795; --highlight: #e6fffa; --text-accent: #285e61; }
+        .theme-ch11 { --accent: #e53e3e; --highlight: #fff5f5; --text-accent: #9b2c2c; }
+        .theme-ch12 { --accent: #5a67d8; --highlight: #ebf4ff; --text-accent: #434190; }
+        .theme-ch13 { --accent: #d69e2e; --highlight: #fffff0; --text-accent: #975a16; }
+        .theme-ch14 { --accent: #4a5568; --highlight: #f7fafc; --text-accent: #2d3748; }
+        .theme-ch15 { --accent: #00b5d8; --highlight: #e0fbfc; --text-accent: #00768c; }
+        .theme-ch16 { --accent: #d53f8c; --highlight: #fff5f7; --text-accent: #97266d; }
+        .theme-ch17 { --accent: #8d6e63; --highlight: #efebe9; --text-accent: #5d4037; }
+
+        /* --- Layout --- */
+        .sidebar {
+            width: var(--sidebar-width);
+            height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            background: #111827;
+            border-right: 1px solid #1f2937;
+            z-index: 50;
+            transition: transform 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            color: #f3f4f6;
+        }
+        .sidebar.collapsed { transform: translateX(-100%); }
+
+        .main-content {
+            margin-left: var(--sidebar-width);
+            min-height: 100vh;
+            transition: margin-left 0.3s ease;
+            padding: 3rem 2rem;
+        }
+        .main-content.expanded { margin-left: 0; }
+
+        /* --- Content Styling --- */
+        .doc-content {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            padding: 3.5rem;
+            border-radius: 16px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            border-top: 8px solid var(--accent);
+        }
+
+        .doc-title { font-size: 2.5rem; font-weight: 800; color: #1a202c; margin-bottom: 0.5rem; letter-spacing: -0.02em; }
+        
+        .doc-section-title { 
+            font-size: 1.5rem; font-weight: 700; color: var(--text-accent); 
+            margin-top: 3.5rem; margin-bottom: 1.5rem; 
+            border-bottom: 2px solid var(--highlight); padding-bottom: 0.5rem; 
+        }
+        
+        .doc-subtitle { font-size: 1.25rem; font-weight: 700; color: #2d3748; margin-top: 2.5rem; margin-bottom: 1rem; padding-left: 0.75rem; border-left: 4px solid var(--highlight); }
+
+        /* --- Strict List Hierarchy System --- */
+        .doc-content ul, .doc-content ol {
+            margin-bottom: 1.5rem;
+            padding-left: 1.5rem;
+            color: var(--text-secondary);
+        }
+        .doc-content ul { list-style-type: disc; }
+        .doc-content ol { list-style-type: decimal; }
+        .doc-content li { margin-bottom: 0.75rem; line-height: 1.7; }
+        
+        /* Markers */
+        .doc-content ul > li::marker { color: var(--accent); font-weight: bold; }
+        .doc-content ol > li::marker { color: var(--text-accent); font-weight: bold; }
+
+        /* NESTED LISTS (The Fix) */
+        .doc-content li > ul, .doc-content li > ol {
+            margin-top: 0.5rem; 
+            margin-bottom: 0.5rem; 
+            padding-left: 2rem; 
+            border-left: 3px solid #e5e7eb; /* Visual guide */
+        }
+        .doc-content li > ul { list-style-type: circle; } /* Sub-bullet */
+        .doc-content li > ol { list-style-type: decimal; } /* Sub-number */
+
+        /* Definition Cards (Part 1 Special Style) */
+        .definition-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            list-style: none !important;
+            padding-left: 0 !important;
+        }
+
+        .definition-card {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-left: 5px solid var(--accent);
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+        }
+        
+        /* Nested items inside definition cards */
+        .definition-card ul {
+            margin-top: 1rem;
+            margin-bottom: 0;
+            padding-left: 1.5rem;
+            border-left: none; /* Reset border for card internals if preferred, or keep */
+            list-style-type: disc;
+        }
+        .definition-card li { margin-bottom: 0.5rem; }
+
+        /* Term Highlight */
+        .term { color: #1a202c; font-weight: 700; font-size: 1.1em; }
+        strong { color: #1a202c; font-weight: 700; }
+
+        /* --- Text Blocks & Labels (Part 2) --- */
+        .text-block { margin-bottom: 1.25rem; line-height: 1.8; color: var(--text-secondary); }
+        .label-highlight {
+            background-color: var(--highlight);
+            color: var(--text-accent);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: 700;
+            margin-right: 4px;
+        }
+
+        /* --- Navigation --- */
+        .nav-item {
+            padding: 12px 24px; cursor: pointer; border-left: 4px solid transparent;
+            color: #9ca3af; font-weight: 500; transition: all 0.2s; font-size: 0.95rem;
+        }
+        .nav-item:hover { background-color: #1f2937; color: #f3f4f6; }
+        .nav-item.active { 
+            background-color: #1f2937; color: white; border-left-color: var(--accent); font-weight: 700; position: relative;
+        }
+        .nav-item.active::after {
+            content: ''; position: absolute; right: 20px; top: 50%; transform: translateY(-50%);
+            width: 8px; height: 8px; border-radius: 50%; background-color: var(--accent); box-shadow: 0 0 8px var(--accent);
+        }
+
+        /* --- Font Controls --- */
+        .font-controls {
+            display: flex; gap: 8px; align-items: center;
+            background: #1f2937; padding: 6px 12px; border-radius: 8px; margin-top: 10px;
+        }
+        .font-btn {
+            background: #374151; color: white; border: none; border-radius: 4px;
+            width: 28px; height: 28px; cursor: pointer; font-size: 0.9rem; font-weight: 600;
+            transition: background 0.2s; display: flex; align-items: center; justify-content: center;
+        }
+        .font-btn:hover { background: #4b5563; }
+
+        .toggle-btn {
+            position: fixed; top: 1.25rem; left: 1.25rem; z-index: 60;
+            background: #1f2937; padding: 0.6rem; border-radius: 50%;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3); cursor: pointer; border: 1px solid #374151; color: white;
+        }
+
+        .hidden-chapter { display: none; }
+        .active-chapter { display: block; animation: fadeIn 0.4s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        @media (max-width: 768px) {
+            .sidebar { transform: translateX(-100%); }
+            .sidebar.active { transform: translateX(0); }
+            .main-content { margin-left: 0; padding: 5rem 1rem; }
+            .doc-content { padding: 2rem 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <button class="toggle-btn" onclick="toggleSidebar()">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+    </button>
+
+    <nav class="sidebar" id="sidebar">
+        <div class="p-8 border-b border-gray-700">
+            <h1 class="text-2xl font-bold font-serif tracking-tight text-white">Exam Review</h1>
+            <p class="text-xs font-bold text-gray-400 uppercase tracking-widest mt-2">Discourse Analysis</p>
+            
+            <div class="font-controls">
+                <span class="text-xs text-gray-400 uppercase mr-auto">Text Size</span>
+                <button class="font-btn" onclick="adjustFont(-1)">A-</button>
+                <button class="font-btn" onclick="adjustFont(1)">A+</button>
+            </div>
+        </div>
+        
+        <div class="flex-1 overflow-y-auto py-4 space-y-1">
+            <div class="nav-item" onclick="showChapter('ch6')" id="nav-ch6">Ch 6: Conversations</div>
+            <div class="nav-item" onclick="showChapter('ch7')" id="nav-ch7">Ch 7: Applying Tools</div>
+            <div class="nav-item" onclick="showChapter('ch8')" id="nav-ch8">Ch 8: Basic Meanings</div>
+            <div class="nav-item" onclick="showChapter('ch9')" id="nav-ch9">Ch 9: Figured Worlds</div>
+            <div class="nav-item" onclick="showChapter('ch10')" id="nav-ch10">Ch 10: Politics</div>
+            <div class="nav-item" onclick="showChapter('ch11')" id="nav-ch11">Ch 11: Context</div>
+            <div class="nav-item" onclick="showChapter('ch12')" id="nav-ch12">Ch 12: Transcription</div>
+            <div class="nav-item" onclick="showChapter('ch13')" id="nav-ch13">Ch 13: Processing</div>
+            <div class="nav-item" onclick="showChapter('ch14')" id="nav-ch14">Ch 14: Meaning & Choice</div>
+            <div class="nav-item" onclick="showChapter('ch15')" id="nav-ch15">Ch 15: Analysis 1</div>
+            <div class="nav-item" onclick="showChapter('ch16')" id="nav-ch16">Ch 16: Analysis 2</div>
+            <div class="nav-item" onclick="showChapter('ch17')" id="nav-ch17">Ch 17: Multimodality</div>
+        </div>
+    </nav>
+
+    <main class="main-content" id="main">
+        
+        <!-- Welcome -->
+        <div id="welcome" class="active-chapter doc-content border-t-0 border-l-4 border-gray-800">
+            <h1 class="doc-title text-4xl">Study Guide</h1>
+            <p class="text-lg text-gray-600 mt-4 leading-relaxed">Select a chapter from the sidebar to begin.</p>
+        </div>
+
+        <!-- Chapter 6 -->
+        <div id="ch6" class="hidden-chapter theme-ch6">
+            <div class="doc-content">
+                <div class="text-xs font-bold uppercase tracking-widest text-blue-600 mb-2">Chapter 6</div>
+                <h1 class="doc-title">Conversations and Intertextuality</h1>
+
+                <h2 class="doc-section-title">Part 1: Key Definitions (For "Define" Questions)</h2>
+                <p class="mb-6 italic text-gray-500">Memorize these definitions, including the scholars' names where applicable.</p>
+                <ul class="definition-list">
+                    <li class="definition-card">
+                        <span class="term">Big “C” Conversations:</span> 
+                        These are public debates, arguments, motifs, issues, or themes (like abortion, smoking, or affirmative action) that play out in society.
+                        <ul>
+                            <li>They are not just language; they encompass the "social practices, identities, and values of the participants".</li>
+                            <li>Gee uses the metaphor that Discourses use humans "to talk to, with, and against each other".</li>
+                        </ul>
+                    </li>
+                    <li class="definition-card">
+                        <span class="term">Intertextuality:</span> 
+                        A concept originally from literary studies referring to how texts influence, reference, or echo other texts.
+                        <!-- NESTED LIST CORRECTION START -->
+                        <ul>
+                            <li><strong>Poststructuralists (Julia Kristeva & Roland Barthes):</strong> They expanded the concept to suggest <em>all</em> texts are intertextual because they draw from pre-existing cultural codes.</li>
+                            <li><strong>Norman Fairclough:</strong> Defines it as texts being "full of snatches of other texts" which may be assimilated, contradicted, or ironically echoed.</li>
+                        </ul>
+                        <!-- NESTED LIST CORRECTION END -->
+                    </li>
+                    <li class="definition-card">
+                        <span class="term">Dialogism (Mikhail Bakhtin):</span> 
+                        The theory that all language and thought are inherently "dialogic," meaning they are produced through interaction between differing voices rather than in isolation. No utterance can be understood without its context.
+                    </li>
+                    <li class="definition-card">
+                        <span class="term">Heteroglossia (Mikhail Bakhtin):</span> 
+                        Closely related to dialogism, this refers to the diversity of voices, styles, and points of view within a language. It describes the "play of social languages" in society.
+                    </li>
+                    <li class="definition-card">
+                        <span class="term">Songlines (Dreaming Tracks):</span> 
+                        An example of intertextuality in Australian Aboriginal culture. These are songs about paths across the landscape taken by "creator-beings" during the "Dreaming" (creation time). They serve as a guide for navigating the physical landscape and daily actions.
+                    </li>
+                </ul>
+
+                <h2 class="doc-section-title">Part 2: Core Arguments & Discussion (For "Discuss" Questions)</h2>
+                
+                <ol class="outline-list-1">
+                    <li class="outline-item-1">
+                        <div class="outline-title-1">The Historical Nature of Discourses</div>
+                        <p>Gee argues that Discourses are historical entities that exist before we are born and continue after we die.</p>
+                        <ul class="outline-list-2">
+                            <li class="outline-item-2">
+                                <span class="label-highlight">The Argument:</span> When we debate current issues, we are often channeling historical clashes between Discourses, even if we are unaware of the specific history.
+                            </li>
+                            <li class="outline-item-2">
+                                <span class="label-highlight">The Example (Slavery in MA):</span> Gee uses the 19th-century debate on escaped slaves in Massachusetts. This was a clash between two specific Discourses:
+                                <ul class="outline-list-3">
+                                    <li><strong>Transcendentalists (e.g., Emerson/Thoreau):</strong> Championed "higher law" and personal conscience over the state.</li>
+                                    <li><strong>Elites:</strong> Championed the "rule of law" above personal conscience.</li>
+                                </ul>
+                            </li>
+                            <li class="outline-item-2">
+                                <span class="label-highlight">Significance:</span> These historical themes (conscience vs. law) were handed down and shape modern Conversations today, such as debates on civil disobedience.
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li class="outline-item-1">
+                        <div class="outline-title-1">Moral Citizenship and "Big C" Conversations</div>
+                        <p>Gee explicitly connects knowledge of Discourse to ethics.</p>
+                        <ul class="outline-list-2">
+                            <li class="outline-item-2">
+                                <span class="label-highlight">The Argument:</span> Being aware of the "Big C Conversations" that inform your society is a "necessary precondition for morally responsible citizenship".
+                            </li>
+                            <li class="outline-item-2">
+                                <span class="label-highlight">Why:</span> Just as you cannot fairly comment on a private conversation you haven't heard, you cannot fairly critique or vote on societal issues if you are unaware of the history, views, values, and identities behind the opposing viewpoints.
+                            </li>
+                            <li class="outline-item-2">
+                                <span class="label-highlight">Current Context:</span> Gee warns this is in short supply because our society is "highly polarized" and inhabited by echo chambers.
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li class="outline-item-1">
+                        <div class="outline-title-1">Contextual Meaning: The "All Lives Matter" Case</div>
+                        <p>Gee argues that you cannot analyze a claim based only on its literal meaning; you must analyze its place within the "Big C Conversation."</p>
+                        <ul class="outline-list-2">
+                            <li class="outline-item-2">
+                                <span class="label-highlight">The Case Study:</span> The phrase "All lives matter".
+                            </li>
+                            <li class="outline-item-2">
+                                <span class="label-highlight">Literal Meaning:</span> On the surface, it appears to advocate for universal human rights.
+                            </li>
+                            <li class="outline-item-2">
+                                <span class="label-highlight">Discourse Analysis:</span> When viewed through the lens of the "Big C Conversation" regarding <strong>Black Lives Matter</strong> (which focuses on specific systemic racism), the phrase changes meaning.
+                            </li>
+                            <li class="outline-item-2">
+                                <span class="label-highlight">The Conclusion:</span> In context, the phrase is seen by many as a move to distract from or diminish the specific focus on Black suffering. Without understanding the <strong>Conversation</strong>, the claim cannot be fully understood.
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li class="outline-item-1">
+                        <div class="outline-title-1">Intertextuality as "Identity Work"</div>
+                        <p>Gee discusses how we use intertextuality (referencing other texts) to give our mundane lives deeper meaning.</p>
+                        <ul class="outline-list-2">
+                            <li class="outline-item-2">
+                                <span class="label-highlight">Pop Culture:</span> We quote movies (like <em>Groundhog Day</em> or <em>Shawshank Redemption</em>) to bond over shared frustrations, turning a boring job into a shared cultural reference.
+                            </li>
+                            <li class="outline-item-2">
+                                <span class="label-highlight">Biblical Typology:</span> A deep form of intertextuality used by Jewish people, interpreting current life events through the lens of biblical stories (e.g., "Exile" and "Return") to find purpose and continuity.
+                            </li>
+                            <li class="outline-item-2">
+                                <span class="label-highlight">The Problem of Modernity:</span> Gee notes that modern cultures that have lost these deep mythological ties often struggle to give "deeper meaning" to mundane life.
+                            </li>
+                        </ul>
+                    </li>
+                </ol>
+            </div>
+        </div>
+
+        <!-- Chapter 7 -->
+        <div id="ch7" class="hidden-chapter theme-ch7">
+            <div class="doc-content">
+                <div class="text-xs font-bold uppercase tracking-widest text-green-600 mb-2">Chapter 7</div>
+                <h1 class="doc-title">Applying the Tools</h1>
+
+                <h2 class="doc-section-title">Part 1: Key Definitions</h2>
+                <ul class="definition-list">
+                    <li class="definition-card"><span class="term">Active Context:</span> Unlike a static view where context is just "there" (the physical setting), active context is "actively created by speakers and writers". It is an integral part of the communicative process that is constantly being "negotiated and redefined by the participants".</li>
+                    <li class="definition-card"><span class="term">Situational Meaning:</span> The specific meaning a word takes on in a specific context, distinct from its literal dictionary definition. For example, "Life" can mean biological existence, a biography ("Her life in America"), or vitality ("Life of the party") depending on the situation.</li>
+                    <li class="definition-card"><span class="term">Generative AI (in Discourse Analysis):</span> Algorithms that generate new data similar to their training data. Gee uses this to define meaning as public: AI has no "intentions" or "mind," yet it produces meaning because meaning relies on shared social conventions, not on "mind reading".</li>
+                    <li class="definition-card"><span class="term">Consensual Limits (Patricia Williams):</span> A concept derived from legal theory referring to the "social and ethical" boundaries we place on what words mean. It suggests that defining a word is not a mechanical act but a "social negotiation and contestation" regarding authority and legitimacy.</li>
+                </ul>
+
+                <h2 class="doc-section-title">Part 2: Core Arguments & Discussion</h2>
+                
+                <ol class="outline-list-1">
+                    <li class="outline-item-1">
+                        <div class="outline-title-1">Context is Actively Created (Not Passive)</div>
+                        <p>Gee argues against the idea that context is merely the backdrop of a conversation.</p>
+                        <ul class="outline-list-2">
+                            <li class="outline-item-2"><span class="label-highlight">The Argument:</span> Communicators do not just exist in a context; they "actively construe" (interpret) the physical setting and the other participants.</li>
+                            <li class="outline-item-2"><span class="label-highlight">The Implication:</span> We manipulate beliefs and expectations to change the context. Because we cannot know what is in another person's head (or even fully in our own unconscious minds), communication is always "active guessing work" to build a context that makes sense.</li>
+                        </ul>
+                    </li>
+
+                    <li class="outline-item-1">
+                        <div class="outline-title-1">The "Public" Nature of Meaning (The AI Argument)</div>
+                        <p>Gee reveals that the sample text in this chapter (a nuanced argument about abortion) was actually written by a Generative AI (Claude 3). He uses this to make a massive theoretical point about where meaning resides.</p>
+                        <ul class="outline-list-2">
+                            <li class="outline-item-2"><span class="label-highlight">The Problem:</span> We usually assume meaning comes from a speaker's intention/mind. AI has no mind, feelings, or intentions.</li>
+                            <li class="outline-item-2"><span class="label-highlight">The Resolution:</span> We can still interpret AI because meaning is <strong>not</strong> locked in a head; it is "public and social".</li>
+                            <li class="outline-item-2"><span class="label-highlight">The Takeaway:</span> Meaning comes from "social conventions that we share," which allows us to treat AI text <strong>as if</strong> it were human.</li>
+                        </ul>
+                    </li>
+
+                    <li class="outline-item-1">
+                        <div class="outline-title-1">The Politics of Definition (Patricia Williams’ Sausage)</div>
+                        <p>Gee cites legal scholar Patricia Williams to discuss how we define words when reality gets messy.</p>
+                        <ul class="outline-list-2">
+                            <li class="outline-item-2"><span class="label-highlight">The Case:</span> A sausage manufacturer argued that "pig meat plus impurities (rodents/sawdust)" still counted as "sausage" because it came out of a sausage machine.</li>
+                            <li class="outline-item-2"><span class="label-highlight">The Discussion:</span> Williams argues we have three choices when defining a word in a new context:
+                                <ul class="outline-list-3">
+                                    <li><strong>Validate the machine:</strong> If the machine made it, it's sausage (Enlarging the authority of the maker).</li>
+                                    <li><strong>Expand the definition:</strong> "Sausage" now includes "rodent sausage".</li>
+                                    <li><strong>Challenge Comprehension (The Ethical Choice):</strong> We must define the "consensual limits" of the word and acknowledge our own role in the "creation of reality".</li>
+                                </ul>
+                            </li>
+                            <li class="outline-item-2"><span class="label-highlight">Conclusion:</span> Defining words is an ethical act where we decide "what the limits of their meanings will or should be".</li>
+                        </ul>
+                    </li>
+
+                    <li class="outline-item-1">
+                        <div class="outline-title-1">The "Blueprint" vs. "Ingredient" Metaphor</div>
+                        <p>Gee discusses the structural ambiguity of the phrase "X begins Y" (specifically in the debate "Life begins at conception").</p>
+                        <ul class="outline-list-2">
+                            <li class="outline-item-2"><span class="label-highlight">The Ambiguity:</span>
+                                <ul class="outline-list-3">
+                                    <li><strong>Meaning A (Precursor):</strong> "A journey begins with a map." The map is a start, but <strong>not</strong> part of the journey itself. (Metaphor: Blueprint).</li>
+                                    <li><strong>Meaning B (Component):</strong> "A journey begins with a first step." The step <strong>is</strong> part of the journey. (Metaphor: First Chapter).</li>
+                                </ul>
+                            </li>
+                            <li class="outline-item-2"><span class="label-highlight">The Application:</span> The debate over "Life begins at conception" is a debate over which grammar applies: Is the zygote a blueprint (precursor to a human) or the first chapter (already a human)?</li>
+                        </ul>
+                    </li>
+                </ol>
+            </div>
+        </div>
+
+        <!-- Chapter 8 -->
+        <div id="ch8" class="hidden-chapter theme-ch8">
+            <div class="doc-content">
+                <div class="text-xs font-bold uppercase tracking-widest text-purple-600 mb-2">Chapter 8</div>
+                <h1 class="doc-title">Basic Meanings, Situational Meanings, and Figured Worlds</h1>
+
+                <h2 class="doc-section-title">Part 1: Key Definitions</h2>
+                <ul class="definition-list">
+                    <li class="definition-card"><span class="term">Basic Meaning:</span> The general, literal meaning a word or grammatical structure has out of context. 
+                        <ul>
+                            <li>Example: The basic meaning of "cat" is a feline animal. The basic meaning of a "Subject" is the topic of a sentence.</li>
+                            <li>Validity: Analysis of basic meaning relies on the rules of grammar (syntax and semantics).</li>
+                        </ul>
+                    </li>
+                    <li class="definition-card"><span class="term">Situational Meaning:</span> The highly specific meaning words and phrases take on in actual contexts of use. 
+                        <ul>
+                            <li>Example: In a context about breakable objects, "The cat broke" means a statue, not an animal. In the sentence "Mistakes were made," the subject choice is used to evade responsibility.</li>
+                        </ul>
+                    </li>
+                    <li class="definition-card"><span class="term">The Frame Problem:</span> The dilemma that context is "indefinitely large," and any new aspect of context we consider can change our interpretation of an utterance. 
+                        <ul>
+                            <li>Double-edged sword: It is a <strong>problem</strong> because interpretations are always vulnerable to change, but a <strong>tool</strong> because widening the context allows analysts to see what is being left unsaid or effaced.</li>
+                        </ul>
+                    </li>
+                    <li class="definition-card"><span class="term">Critical Discourse Analysis (CDA):</span> A form of analysis that goes beyond descriptive meaning to study how language is associated with "politics" (power, privilege, and the distribution of social goods).</li>
+                    <li class="definition-card"><span class="term">Figured Worlds (Dorothy Holland):</span> A socially constructed realm of interpretation in which "particular characters and actors are recognized, significance is assigned to certain acts, and particular outcomes are valued over others". 
+                        <ul>
+                            <li>Simplified World: It is a simplified model (like a story/movie in our heads) populated by agents moved by specific forces.</li>
+                        </ul>
+                    </li>
+                    <li class="definition-card"><span class="term">Cultural Models:</span> A shared set of beliefs, values, and norms that play a crucial role in defining what is considered "normal" or acceptable within a society.</li>
+                    <li class="definition-card"><span class="term">Schema:</span> A term from cognitive psychology referring to a mental framework that helps organize and interpret information (e.g., a "restaurant schema" helps you order food even in a new place).</li>
+                </ul>
+
+                <h2 class="doc-section-title">Part 2: Core Arguments & Discussion</h2>
+                
+                <ol class="outline-list-1">
+                    <li class="outline-item-1">
+                        <div class="outline-title-1">The Politics of Grammar (The Gagnon Example)</div>
+                        <p>Gee argues that even simple grammatical choices (Basic Meanings) can do political work (Situational Meanings).</p>
+                        <ul class="outline-list-2">
+                            <li class="outline-item-2"><span class="label-highlight">The Case:</span> A historian (Gagnon) wrote: "Though the Whig and Tory parties were both narrowly confined to the privileged classes, they represented different factions."</li>
+                            <li class="outline-item-2"><span class="label-highlight">The Analysis:</span>
+                                <ul class="outline-list-3">
+                                    <li><strong>Grammar:</strong> Gagnon put the class issue ("confined to privileged classes") in a <strong>dependent clause</strong>. Dependent clauses function to express information that is assumed/taken for granted, not asserted.</li>
+                                    <li><strong>Politics:</strong> By backgrounding the class issue, Gagnon "effaced" the argument that class conflict drives history. He forced the reader to accept the class divide as a mere background detail rather than the main point of debate.</li>
+                                </ul>
+                            </li>
+                            <li class="outline-item-2"><span class="label-highlight">Conclusion:</span> Grammatical structure (what you foreground vs. background) determines what is up for debate and what is taken as "truth," which is a political act.</li>
+                        </ul>
+                    </li>
+
+                    <li class="outline-item-1">
+                        <div class="outline-title-1">The Frame Problem & Validity</div>
+                        <p>Gee discusses how we determine if an interpretation is valid given that context never ends.</p>
+                        <ul class="outline-list-2">
+                            <li class="outline-item-2"><span class="label-highlight">The Argument:</span> You cannot claim an analysis is valid unless you keep widening the context until the widening "appears to make no difference" to the interpretation.</li>
+                            <li class="outline-item-2"><span class="label-highlight">Example (Child Mortality):</span>
+                                <ul class="outline-list-3">
+                                    <li><strong>Narrow Context (Medical):</strong> "Children in Africa die because of malaria." (Valid: It is a medical fact).</li>
+                                    <li><strong>Wide Context (Economic):</strong> Malaria only kills vulnerable populations due to poverty and lack of infrastructure. In this context, "because of malaria" is misleading; they die "because of poverty".</li>
+                                </ul>
+                            </li>
+                            <li class="outline-item-2"><span class="label-highlight">Discussion:</span> A narrow context hides political realities; widening the frame reveals them.</li>
+                        </ul>
+                    </li>
+
+                    <li class="outline-item-1">
+                        <div class="outline-title-1">Why "Definitions" Fail (The Pope is a Bachelor)</div>
+                        <p>Gee argues that we do not use words based on their dictionary definitions, but based on "Typical Stories" (Cultural Models).</p>
+                        <ul class="outline-list-2">
+                            <li class="outline-item-2"><span class="label-highlight">The Puzzle:</span> A "bachelor" is defined as an unmarried man. The Pope is an unmarried man. Yet, we are reluctant to call the Pope a bachelor.</li>
+                            <li class="outline-item-2"><span class="label-highlight">The Reason:</span> Our cultural model of a "bachelor" is a story about a man who is eligible for marriage but has chosen to wait. The Pope does not fit this "typical story" because he has vowed never to marry.</li>
+                            <li class="outline-item-2"><span class="label-highlight">The Takeaway:</span> We process language through "Social Mind Frameworks" (stories about what is normal), not just logic.</li>
+                        </ul>
+                    </li>
+
+                    <li class="outline-item-1">
+                        <div class="outline-title-1">The Evolution of Figured Worlds (The University)</div>
+                        <p>Gee uses the University to show how "Figured Worlds" (identities and roles) change over time.</p>
+                        <ul class="outline-list-2">
+                            <li class="outline-item-2"><span class="label-highlight">Old Figured World:</span> A place where students (seeking knowledge) and professors (creating knowledge) interact physically.</li>
+                            <li class="outline-item-2"><span class="label-highlight">New Figured World:</span> A place where students seek credentials (not just learning), faculty are often casual employees (gig workers), and learning is standardized/online.</li>
+                            <li class="outline-item-2"><span class="label-highlight">Significance:</span> "Reality" is not static; it is constructed by these shared stories. When the story changes, the institution itself changes.</li>
+                        </ul>
+                    </li>
+                </ol>
+            </div>
+        </div>
+
+        <!-- Chapter 9 -->
+        <div id="ch9" class="hidden-chapter theme-ch9">
+            <div class="doc-content">
+                <div class="text-xs font-bold uppercase tracking-widest text-orange-600 mb-2">Chapter 9</div>
+                <h1 class="doc-title">Figured Worlds</h1>
+
+                <h2 class="doc-section-title">Part 1: Key Definitions</h2>
+                <ul class="definition-list">
+                    <li class="definition-card"><span class="term">Figured Worlds (Expanded):</span> Simplified, often unconscious theories or stories about how the world works that mediate between the "micro" level of social interaction and the "macro" level of institutions. 
+                        <ul><li>Function: They are "first thoughts" or taken-for-granted assumptions about what is typical or normal.</li></ul>
+                    </li>
+                    <li class="definition-card"><span class="term">Mental Simulations:</span> The cognitive process where our minds run "movies" or "video games" to understand the present and prepare for the future. 
+                        <ul>
+                            <li><strong>Prototypical Simulations:</strong> The simulation we run when we assume a situation is "typical" (e.g., a standard wedding).</li>
+                            <li><strong>Special-Case Simulations:</strong> The simulation we adapt when we encounter a specific context that doesn't fit the prototype (e.g., a wedding between two men).</li>
+                        </ul>
+                    </li>
+                    <li class="definition-card"><span class="term">Cultivation Model (Annette Lareau):</span> A parenting figured world (typical of the middle/upper class) where the child is treated like a plant that must be constantly monitored and tended. It involves negotiation, structured activities, and "book language".</li>
+                    <li class="definition-card"><span class="term">Natural Growth Model (Annette Lareau):</span> A parenting figured world (typical of the working class) where the child is treated like a plant that will develop naturally if given food and love. It involves less intervention, more free time, and directives rather than negotiation.</li>
+                    <li class="definition-card"><span class="term">Types of Figured Worlds (Claudia Strauss):</span>
+                        <ul>
+                            <li><strong>Espoused Worlds:</strong> Theories we consciously <em>say</em> we believe.</li>
+                            <li><strong>Evaluative Worlds:</strong> Theories we use to <em>judge</em> ourselves or others.</li>
+                            <li><strong>Worlds-in-(inter)action:</strong> Theories that actually <em>guide</em> our actions.</li>
+                        </ul>
+                    </li>
+                    <li class="definition-card"><span class="term">Involution (Related to "Lying Flat"):</span> A sociological term referring to the phenomenon where a social or cultural formation stagnates or cannot be transformed into a higher-level formation after it has developed to a certain stage. (Used by Chinese youth to describe their economy).</li>
+                    <li class="definition-card"><span class="term">"Lying Flat" (Tang Ping):</span> A figured world emerging among young Chinese people as a form of passive resistance against hyper-competition and overwork. It reinterprets "success" not as material wealth but as living quietly and finding personal value.</li>
+                </ul>
+
+                <h2 class="doc-section-title">Part 2: Core Arguments & Discussion</h2>
+                
+                <ol class="outline-list-1">
+                    <li class="outline-item-1">
+                        <div class="outline-title-1">Simulations: How the Mind Works</div>
+                        <p>Gee argues that we do not store static definitions in our heads; we store <strong>simulations</strong>.</p>
+                        <ul class="outline-list-2">
+                            <li class="outline-item-2"><span class="label-highlight">The Argument:</span> Our minds are like video game engines. When we hear a word (like "Wedding"), we run a simulation based on our past experiences.</li>
+                            <li class="outline-item-2"><span class="label-highlight">Foregrounding/Backgrounding:</span> These simulations are not neutral. They foreground what we think is important (e.g., the bride's happiness) and background other things, just like a scientist's computer model.</li>
+                            <li class="outline-item-2"><span class="label-highlight">The Danger:</span> We often mistake our "Prototypical Simulation" for what is "Right." When reality deviates from our simulation (e.g., a gay marriage), we often judge it as "deviant" rather than just "different".</li>
+                        </ul>
+                    </li>
+
+                    <li class="outline-item-1">
+                        <div class="outline-title-1">All Meaning is Local (The Mayan Example)</div>
+                        <p>Gee uses a case study from the Yucatan to prove that you cannot understand meaning without understanding the local Figured World.</p>
+                        <ul class="outline-list-2">
+                            <li class="outline-item-2"><span class="label-highlight">The Case:</span> A woman says a man is "drinking" (even though he is eating a roll) and "seated" (even though he might be standing).</li>
+                            <li class="outline-item-2"><span class="label-highlight">The Figured World:</span> In this Mayan culture:
+                                <ul class="outline-list-3">
+                                    <li>"Drinking" refers to the <strong>time of day</strong> (morning/evening meals), not the action.</li>
+                                    <li>"Seated" means "at home and available," not the physical posture.</li>
+                                </ul>
+                            </li>
+                            <li class="outline-item-2"><span class="label-highlight">Conclusion:</span> Meaning is not in the dictionary; it is "wedded to local, on-site social and Discourse practices".</li>
+                        </ul>
+                    </li>
+
+                    <li class="outline-item-1">
+                        <div class="outline-title-1">Parenting and Social Class (Lareau & Harkness)</div>
+                        <p>Gee discusses how different social classes operate in different Figured Worlds, creating social consequences.</p>
+                        <ul class="outline-list-2">
+                            <li class="outline-item-2"><span class="label-highlight">Inconsistency (Harkness Study):</span> Parents use the "Independence Model" inconsistently. A child refusing a diaper change is seen as "independent" (good), but the same child submitting to a nap in a car seat is <strong>not</strong> seen as "dependent" (bad). Parents only label "problematic" behaviors as "stages".</li>
+                            <li class="outline-item-2"><span class="label-highlight">Outcome (Lareau Study):</span>
+                                <ul class="outline-list-3">
+                                    <li><strong>Cultivation Model</strong> children gain skills valued by schools (negotiation, vocabulary) but can be entitled.</li>
+                                    <li><strong>Natural Growth Model</strong> children are respectful and self-sustaining but may struggle with institutional authority.</li>
+                                </ul>
+                            </li>
+                            <li class="outline-item-2"><span class="label-highlight">The Politics:</span> Schools assume the <strong>Cultivation Model</strong> is the norm. Therefore, they treat "Natural Growth" children as deficient, even though they are just different.</li>
+                        </ul>
+                    </li>
+
+                    <li class="outline-item-1">
+                        <div class="outline-title-1">Figured Worlds in Conflict (The "Colonized" Mind)</div>
+                        <p>Gee uses Claudia Strauss's study of working-class men to show how we can hold conflicting models that hurt us.</p>
+                        <ul class="outline-list-2">
+                            <li class="outline-item-2"><span class="label-highlight">The Conflict:</span> These men held two models:
+                                <ul class="outline-list-3">
+                                    <li><strong>Success Model (Evaluative):</strong> "Anyone can succeed if they work hard" (The American Dream).</li>
+                                    <li><strong>Breadwinner Model (Action):</strong> "Family comes first" (e.g., refusing overtime to be with kids).</li>
+                                </ul>
+                            </li>
+                            <li class="outline-item-2"><span class="label-highlight">The Consequence:</span> The men <strong>acted</strong> on the Breadwinner model (being good fathers) but <strong>judged</strong> themselves by the Success model.</li>
+                            <li class="outline-item-2"><span class="label-highlight">Result:</span> They felt like failures (low self-esteem) because they were "colonized" by a figured world (Success) that didn't actually fit their lived reality or actions.</li>
+                        </ul>
+                    </li>
+                </ol>
+            </div>
+        </div>
+
+        <!-- Chapter 10 -->
+        <div id="ch10" class="hidden-chapter theme-ch10">
+            <div class="doc-content">
+                <div class="text-xs font-bold uppercase tracking-widest text-teal-600 mb-2">Chapter 10</div>
+                <h1 class="doc-title">More on Figured Worlds</h1>
+
+                <h2 class="doc-section-title">Part 1: Key Definitions</h2>
+                <ul class="definition-list">
+                    <li class="definition-card"><span class="term">Politics (in Discourse Analysis):</span> In Gee's framework, politics refers to anything (talk, text, interaction) where "social goods" are at stake.
+                        <ul><li>Social Goods: Things like power, status, valued knowledge, positions, or possessions. Figured worlds are inherently political because they embed assumptions about what is "appropriate" or "normal," thereby distributing these goods.</li></ul>
+                    </li>
+                    <li class="definition-card"><span class="term">Reproduction of Cultural Capital:</span> A sociological theory (often associated with Bourdieu) explaining how class privilege is maintained.
+                        <ul>
+                            <li>Mechanism: Middle-class homes socialize children in ways that "resonate" with school practices. Schools treat these home-based habits as "natural" or "giftedness," rewarding them.</li>
+                            <li>Result: Advantage is passed down not just through money, but through values and habits (cultural capital) that are compounded in school.</li>
+                        </ul>
+                    </li>
+                    <li class="definition-card"><span class="term">Deep Canvasing:</span> A political method of engaging people in conversation to change their minds on identity-heavy issues (e.g., immigration).
+                        <ul>
+                            <li>Method: Instead of arguing with facts/logic, the canvasser asks the person to recall a specific personal experience (a "lived memory") to trigger empathy and emotional reflection.</li>
+                            <li>Goal: To bypass abstract categories ("immigrants are bad") and trigger a simulation of a specific human ("Susie, my neighbor").</li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <h2 class="doc-section-title">Part 2: Core Arguments & Discussion</h2>
+                
+                <ol class="outline-list-1">
+                    <li class="outline-item-1">
+                        <div class="outline-title-1">The Inconsistency of Figured Worlds (The Marcella Case)</div>
+                        <p>Gee analyzes an interview with "Marcella" (a Latina student) to show how figured worlds are often partial, inconsistent, and contradictory.</p>
+                        <ul class="outline-list-2">
+                            <li class="outline-item-2"><span class="label-highlight">The Contradiction:</span>
+                                <ul class="outline-list-3">
+                                    <li><strong>Theory A (Cultural Capital):</strong> Marcella argues that white people succeed because they "get more education" and have parents who teach them the "points" needed for a career (a structural/sociological view).</li>
+                                    <li><strong>Theory B (Biological Determinism):</strong> She simultaneously argues that white people are "born smart" or have a "piece of smart" inside them.</li>
+                                </ul>
+                            </li>
+                            <li class="outline-item-2"><span class="label-highlight">The "Colonized" Mind (Again):</span> Just like the working-class men in Chapter 9, Marcella uses a dominant figured world (biological intelligence) that works against her own interests, mitigating the power of her own sociological insight.</li>
+                        </ul>
+                    </li>
+
+                    <li class="outline-item-1">
+                        <div class="outline-title-1">Clashing Frameworks (The Middleton Project)</div>
+                        <p>Gee describes a failed collaboration between university <strong>Professors</strong> and middle-school <strong>Teachers</strong> to show what happens when figured worlds clash without reflection.</p>
+                        <ul class="outline-list-2">
+                            <li class="outline-item-2"><span class="label-highlight">The Conflict:</span>
+                                <ul class="outline-list-3">
+                                    <li><strong>Professors' World:</strong> Focused on <strong>Diversity</strong> (race/class), macro-level power structures, and victimhood. They viewed the "downtown" as unsafe and wanted students to study their segregated neighborhoods.</li>
+                                    <li><strong>Teachers' World:</strong> Focused on <strong>Commonality</strong> (citizenship), individual agency, and nurturing. They viewed the "downtown" as the melting pot where everyone becomes a "Middleton citizen."</li>
+                                </ul>
+                            </li>
+                            <li class="outline-item-2"><span class="label-highlight">The Result:</span> They used the same words (like "teacher") to mean different things and viewed each other with suspicion (Professors saw teachers as racist; Teachers saw professors as arrogant) because they never made their figured worlds explicit.</li>
+                        </ul>
+                    </li>
+
+                    <li class="outline-item-1">
+                        <div class="outline-title-1">The Power of Experience (Deep Canvasing)</div>
+                        <p>Gee argues that you cannot change a person's mind on political issues using logic if that issue is tied to their identity.</p>
+                        <ul class="outline-list-2">
+                            <li class="outline-item-2"><span class="label-highlight">The Argument:</span> Humans view others in two ways: as <strong>Abstract Categories</strong> (e.g., "Immigrant") or as <strong>Contextualized Individuals</strong> (e.g., "Susie").</li>
+                            <li class="outline-item-2"><span class="label-highlight">The Mechanism:</span> To change a mind, you must trigger a <strong>simulation</strong>. Facts don't trigger simulations; experiences do.</li>
+                            <li class="outline-item-2"><span class="label-highlight">Quote:</span> "It is hard to rail against immigrants when Susie pops into your mind and heart."</li>
+                        </ul>
+                    </li>
+
+                    <li class="outline-item-1">
+                        <div class="outline-title-1">Figured Worlds as Tools of Inquiry (The Assumption of Sense)</div>
+                        <p>Gee concludes by offering a "moral principle" for Discourse Analysis.</p>
+                        <ul class="outline-list-2">
+                            <li class="outline-item-2"><span class="label-highlight">The Principle:</span> We must assume that everyone has "good reasons" and makes "deep sense" within their own socio-cultural framework.</li>
+                            <li class="outline-item-2"><span class="label-highlight">Why:</span> Humans are "sense-makers." If someone sounds illogical (like Marcella or the Teachers), it is usually because the analyst does not yet understand the specific Figured World they are operating in.</li>
+                        </ul>
+                    </li>
+                </ol>
+            </div>
+        </div>
+
+        <!-- Chapter 11 -->
+        <div id="ch11" class="hidden-chapter theme-ch11">
+            <div class="doc-content">
+                <div class="text-xs font-bold uppercase tracking-widest text-red-600 mb-2">Chapter 11</div>
+                <h1 class="doc-title">Context</h1>
+
+                <h2 class="doc-section-title">Part 1: Key Definitions</h2>
+                <ul class="definition-list">
+                    <li class="definition-card"><span class="term">Reflexivity (in Context):</span> The property of language where it simultaneously reflects the context (what is historically/physically there) and constructs it.
+                        <ul>
+                            <li>Metaphor: Language and context are like "two mirrors facing each other," endlessly reflecting.</li>
+                            <li>Example: Speaking to someone in a friendly way <strong>reflects</strong> the friendship but also <strong>constructs</strong> the relationship as friendly in that moment.</li>
+                        </ul>
+                    </li>
+                    <li class="definition-card"><span class="term">Relevance (of Context):</span> Context is indefinitely large, but communicators use only the "relevant parts" to interpret meaning.
+                        <ul>
+                            <li>Mechanism: Speakers/writers use "cues" (grammar, gestures) to signal what part of the context is relevant (e.g., pointing to an orange rubber duck makes the duck relevant; otherwise, it is just background noise).</li>
+                        </ul>
+                    </li>
+                    <li class="definition-card"><span class="term">Intertextuality (Expanded Definition):</span> In this chapter, Gee expands the definition to include the mixing or juxtaposing of different Social Languages (associated with different Discourses) within a single text.</li>
+                    <li class="definition-card"><span class="term">Hybridity (Social Languages):</span> The mixing of different social languages to assemble a transformed or novel social language for a specific context.</li>
+                </ul>
+
+                <h2 class="doc-section-title">Part 2: Core Arguments & Discussion</h2>
+                
+                <ol class="outline-list-1">
+                    <li class="outline-item-1">
+                        <div class="outline-title-1">The "Chicken and Egg" of Context</div>
+                        <p>Gee argues that Context is not passive; it is active and reflexive.</p>
+                        <ul class="outline-list-2">
+                            <li class="outline-item-2"><span class="label-highlight">The Argument:</span> We often ask: Does the situation dictate the language, or does the language create the situation? Gee answers: <strong>Both.</strong></li>
+                            <li class="outline-item-2"><span class="label-highlight">The Logic:</span> Language reflects reality (e.g., "How ya doin'" reflects a casual workplace), but it also construes reality (e.g., if you said "What's your problem?" you would construe the context as hostile). You cannot separate the two.</li>
+                        </ul>
+                    </li>
+
+                    <li class="outline-item-1">
+                        <div class="outline-title-1">Situational Meaning & Figured Worlds (The Democracy Case)</div>
+                        <p>Gee argues that you cannot understand the Situational Meaning of a word without knowing the Figured World behind it.</p>
+                        <ul class="outline-list-2">
+                            <li class="outline-item-2"><span class="label-highlight">The Case:</span> Milton Friedman's quote: "Restrictions on economic freedom would turn out to be inconsistent with democracy."</li>
+                            <li class="outline-item-2"><span class="label-highlight">The Paradox:</span> The dictionary definition of Democracy (voting) allows people to vote for restrictions. So how is it inconsistent?</li>
+                            <li class="outline-item-2"><span class="label-highlight">The Resolution:</span> You must know the <strong>Neo-Liberal Figured World</strong> (where freedom from coercion is paramount). In <strong>that</strong> world, voting away economic freedom destroys the "consent of the governed," thus destroying democracy. Without the world, the sentence is nonsense.</li>
+                        </ul>
+                    </li>
+
+                    <li class="outline-item-1">
+                        <div class="outline-title-1">Conflict in Discourse (The Middleton "Small Talk")</div>
+                        <p>Gee revisits the conflict between Sara (University Professor) and the Teachers to show how Discourses clash even in small talk.</p>
+                        <ul class="outline-list-2">
+                            <li class="outline-item-2"><span class="label-highlight">The Interaction:</span> The group engages in small talk about local history.</li>
+                            <li class="outline-item-2"><span class="label-highlight">The Teachers:</span> Use the <strong>Middleton Discourse</strong> (bonding over shared oral history/memories of the town).</li>
+                            <li class="outline-item-2"><span class="label-highlight">Sara:</span> Uses <strong>Academic Discourse</strong> mixed with everyday language (citing a student's research paper as evidence).</li>
+                            <li class="outline-item-2"><span class="label-highlight">The Clash:</span> Sara tries to bond, but her Discourse privileges <strong>written research</strong> over <strong>oral memory</strong>, which unintentionally clashes with the teachers' values, replicating the tension of the formal meeting.</li>
+                        </ul>
+                    </li>
+
+                    <li class="outline-item-1">
+                        <div class="outline-title-1">Intertextuality as a Trace of Conversation (The Burrito Case)</div>
+                        <p>Gee analyzes an essay by Richard Ruiz to show how texts are "traces" of Big C Conversations.</p>
+                        <ul class="outline-list-2">
+                            <li class="outline-item-2"><span class="label-highlight">The Text:</span> Ruiz writes about a legal case deciding if a Burrito is a Sandwich. He mixes social languages (Linguistics, Vernacular Spanish, Business Talk, Religious Talk).</li>
+                            <li class="outline-item-2"><span class="label-highlight">The "Big C" Conversation:</span> The essay isn't really about burritos. It is a trace of the historical debate about <strong>Cultural Competence in Law</strong> (referencing cases like <em>Plessy v. Ferguson</em> where judges made culturally incompetent decisions about race). The "Burrito" is a proxy for the rights of Mexican culture in the US.</li>
+                        </ul>
+                    </li>
+                </ol>
+            </div>
+        </div>
+
+        <!-- Chapter 12 -->
+        <div id="ch12" class="hidden-chapter theme-ch12">
+            <div class="doc-content">
+                <div class="text-xs font-bold uppercase tracking-widest text-indigo-600 mb-2">Chapter 12</div>
+                <h1 class="doc-title">Transcription, an “Ideal” Discourse Analysis, and Validity</h1>
+
+                <h2 class="doc-section-title">Part 1: Key Definitions</h2>
+                <ul class="definition-list">
+                    <li class="definition-card"><span class="term">Transcription:</span> A theoretical entity, not a raw record of reality.
+                        <ul><li>Nature: Speech always has more detail than can be captured. A transcript is based on "theoretical judgments" about what is relevant to the analysis. It does not stand outside the analysis; it is <strong>part</strong> of it.</li></ul>
+                    </li>
+                    <li class="definition-card"><span class="term">The "Ideal" Discourse Analysis:</span> A hypothetical, fully complete analysis that asks 42 Questions.
+                        <ul>
+                            <li>The Math: 6 Tools of Inquiry (Situational Meanings, Social Languages, Figured Worlds, Intertextuality, Discourses, Conversations) × 7 Building Tasks = 42 Questions.</li>
+                            <li>Reality: No real analysis does all 42; we pick what is relevant, but the others remain as "unfinished background."</li>
+                        </ul>
+                    </li>
+                    <li class="definition-card"><span class="term">Validity (in Discourse Analysis):</span> Validity is not about "reflecting reality" (since reality is interpreted). It is about the analysis being "trustworthy." It is social and cumulative.
+                        <br>The Four Elements of Validity:
+                        <ul class="sub-list-bullet">
+                            <li><strong>Convergence:</strong> Do answers to the different questions (tools/building tasks) support the same conclusion?</li>
+                            <li><strong>Agreement:</strong> Do "native speakers" of the Discourse or other analysts agree the analysis is plausible?</li>
+                            <li><strong>Coverage:</strong> Can the analysis explain related data or predict what happens in similar situations?</li>
+                            <li><strong>Linguistic Details:</strong> Is the analysis tightly tied to specific grammatical devices and structures?</li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <h2 class="doc-section-title">Part 2: Core Arguments & Discussion</h2>
+                
+                <ol class="outline-list-1">
+                    <li class="outline-item-1">
+                        <div class="outline-title-1">Transcription is Theory (The "Light" Case Study)</div>
+                        <p>Gee uses an interaction between a Researcher and an African American student to show how transcription details change the meaning.</p>
+                        <ul class="outline-list-2">
+                            <li class="outline-item-2"><span class="label-highlight">The Context:</span> A researcher asks a girl about light. The girl starts talking about dinosaurs dying.</li>
+                            <li class="outline-item-2"><span class="label-highlight">The Misunderstanding:</span> The researcher thinks the girl is off-topic and confused.</li>
+                            <li class="outline-item-2"><span class="label-highlight">The Analysis (The Details):</span>
+                                <ul class="outline-list-3">
+                                    <li><strong>Intonation:</strong> The girl uses "low pitch" to signal obviousness and "high pitch/emphasis" to signal new/significant info.</li>
+                                    <li><strong>Topic Chaining:</strong> The girl uses a specific discourse style (background first: dinosaurs died because sun was blocked -> topic: light).</li>
+                                </ul>
+                            </li>
+                            <li class="outline-item-2"><span class="label-highlight">Conclusion:</span> The researcher "co-constructed" the misunderstanding by failing to recognize the child's logic. A detailed transcript reveals the child <strong>was</strong> making sense, but the adult's "school-based" expectations blinded her to it.</li>
+                        </ul>
+                    </li>
+
+                    <li class="outline-item-1">
+                        <div class="outline-title-1">Validity is Social</div>
+                        <p>Gee argues that validity is not an individual achievement but a social process.</p>
+                        <ul class="outline-list-2">
+                            <li class="outline-item-2"><span class="label-highlight">The Argument:</span> No single analysis is perfect. Validity is established over time through "social judgments and adjudications" by the community of scholars.</li>
+                            <li class="outline-item-2"><span class="label-highlight">The Goal:</span> We do not seek "Final Truth." We seek an analysis that explains the data so well that any <strong>future</strong> investigation of the same data would have to take it seriously.</li>
+                        </ul>
+                    </li>
+                </ol>
+            </div>
+        </div>
+
+        <!-- Chapter 13 -->
+        <div id="ch13" class="hidden-chapter theme-ch13">
+            <div class="doc-content">
+                <div class="text-xs font-bold uppercase tracking-widest text-yellow-600 mb-2">Chapter 13</div>
+                <h1 class="doc-title">Processing and Organizing Language</h1>
+
+                <h2 class="doc-section-title">Part 1: Key Definitions</h2>
+                <ul class="definition-list">
+                    <li class="definition-card"><span class="term">Speech Spurts (Idea Units / Tone Units / Lines):</span> Thanks to the biological limits of the human brain and vocal system, speech is produced in small spurts, usually one clause long.
+                        <ol class="sub-list-numbered">
+                            <li><em>Function:</em> Each spurt represents one <strong>focus of consciousness</strong>.</li>
+                            <li><em>Mind's Eye Metaphor:</em> Just as the eye fixates on one small part of a scene at a time, the mind focuses on one small piece of information at a time.</li>
+                        </ol>
+                    </li>
+                    <li class="definition-card"><span class="term">Stanza:</span> A larger unit of speech made up of a "clump" of lines that deal with a single topic, event, image, perspective, or theme.
+                        <ol class="sub-list-numbered">
+                            <li><em>Structure:</em> When the character, time, or event changes, a new Stanza begins. Stanzas function like "boxes" holding related lines.</li>
+                        </ol>
+                    </li>
+                    <li class="definition-card"><span class="term">Focus Stress:</span> The most prominent level of stress in a line (intonation contour).
+                        <ol class="sub-list-numbered">
+                            <li><em>Rule:</em> In English, the focus stress typically falls on the <strong>last content word</strong> (marking all new info). If it falls elsewhere, it marks a specific contrast.</li>
+                        </ol>
+                    </li>
+                    <li class="definition-card"><span class="term">New vs. Old Information:</span>
+                        <ol class="sub-list-numbered">
+                            <li><strong>New Information:</strong> Unpredictable info (stressed).</li>
+                            <li><strong>Old Information:</strong> Predictable or previously mentioned info (unstressed/backgrounded).</li>
+                        </ol>
+                    </li>
+                    <li class="definition-card"><span class="term">Macro-Structure:</span> The larger "body parts" of a narrative or argument. For a story, these are typically:
+                        <ol class="sub-list-numbered">
+                            <li><em>Setting:</em> Time/Place/Characters.</li>
+                            <li><em>Catalyst:</em> The problem/event that starts the action.</li>
+                            <li><em>Crisis:</em> The peak of the problem.</li>
+                            <li><em>Evaluation:</em> Why the story is interesting/tellable.</li>
+                            <li><em>Resolution:</em> How the problem is solved.</li>
+                            <li><em>Coda:</em> Closing the story.</li>
+                        </ol>
+                    </li>
+                    <li class="definition-card"><span class="term">Macro-Lines:</span> "Sentences" in speech. While children often speak in single clauses, adults use syntax to stitch multiple micro-lines (intonation units) together into larger, looser "sentences" or macro-lines.</li>
+                </ul>
+
+                <h2 class="doc-section-title">Part 2: Core Arguments & Discussion</h2>
+                
+                <ol class="outline-list-1">
+                    <li class="outline-item-1">
+                        <div class="outline-title-1">The Physics of Speech (The "Spurt" Theory)</div>
+                        <p>Gee argues that the way we speak is physically determined by our biology.</p>
+                        <ul class="outline-list-2">
+                            <li class="outline-item-2"><span class="label-highlight">The Argument:</span> Speech is not a continuous stream; it is a series of "spurts" (lines).</li>
+                            <li class="outline-item-2"><span class="label-highlight">The Connection:</span> Each line corresponds to a single "idea unit." This proves that our consciousness processes the world in small, bite-sized chunks, not as a seamless whole.</li>
+                        </ul>
+                    </li>
+
+                    <li class="outline-item-1">
+                        <div class="outline-title-1">The Logic of Intonation (Stress = Meaning)</div>
+                        <p>Gee argues that stress is not random; it is the primary way we indicate information status.</p>
+                        <ul class="outline-list-2">
+                            <li class="outline-item-2"><span class="label-highlight">The Rule:</span> We stress <strong>New Information</strong> and leave <strong>Old Information</strong> unstressed.</li>
+                            <li class="outline-item-2"><span class="label-highlight">Example:</span>
+                                <ul class="outline-list-3">
+                                    <li>"Did your daughter find a job?"</li>
+                                    <li>"She found a job as a <strong>SECRETARY</strong>." (Secretary is new; job is old).</li>
+                                </ul>
+                            </li>
+                            <li class="outline-item-2"><span class="label-highlight">Significance:</span> If you miss the stress, you miss the point. A change in stress changes the meaning (e.g., "I LOVE <strong>Mary</strong>" vs. "<strong>I</strong> love Mary").</li>
+                        </ul>
+                    </li>
+
+                    <li class="outline-item-1">
+                        <div class="outline-title-1">The Structure of Narrative (The "Puppy" Story)</div>
+                        <p>Gee analyzes a 7-year-old's story to show that even children use complex cognitive structures (Stanzas).</p>
+                        <ul class="outline-list-2">
+                            <li class="outline-item-2"><span class="label-highlight">The Organization:</span> The child didn't just ramble. She organized her speech into distinct Stanzas (Setting -> Catalyst -> Crisis).</li>
+                            <li class="outline-item-2"><span class="label-highlight">Cultural Specificity:</span> The child placed the <strong>Evaluation</strong> <strong>before</strong> the Resolution (common in some African American storytelling traditions), whereas adults often spread evaluation throughout.</li>
+                            <li class="outline-item-2"><span class="label-highlight">Parallelism:</span> The child used parallel structures (describing the Puppy vs. describing the Father) to create a thematic conflict between "Nature/Freedom" (Puppy) and "Culture/Discipline" (Father).</li>
+                        </ul>
+                    </li>
+
+                    <li class="outline-item-1">
+                        <div class="outline-title-1">Macro-lines and Adult Complexity</div>
+                        <p>Gee distinguishes between child and adult speech organization.</p>
+                        <ul class="outline-list-2">
+                            <li class="outline-item-2"><span class="label-highlight">Child Speech:</span> Often one line = one clause.</li>
+                            <li class="outline-item-2"><span class="label-highlight">Adult Speech:</span> More complex. Adults use syntax (subordinating clauses, "and," "which") to weave multiple lines into <strong>Macro-lines</strong>.</li>
+                            <li class="outline-item-2"><span class="label-highlight">Implication:</span> In speech, "sentences" (macro-lines) are emergent and loose, often constructed on the fly, unlike written sentences which are tightly integrated.</li>
+                        </ul>
+                    </li>
+                </ol>
+            </div>
+        </div>
+
+        <!-- Chapter 14 -->
+        <div id="ch14" class="hidden-chapter theme-ch14">
+            <div class="doc-content">
+                <div class="text-xs font-bold uppercase tracking-widest text-gray-600 mb-2">Chapter 14</div>
+                <h1 class="doc-title">Meaning and Choice</h1>
+
+                <h2 class="doc-section-title">Part 1: Key Definitions</h2>
+                <ul class="definition-list">
+                    <li class="definition-card"><span class="term">Thematic Meaning:</span> A third level of meaning (deeper than Basic and Situational meaning) that connects to themes of culture, history, identity, and institutions.
+                        <ul><li>Nature: It is often implicit and tied to values or rituals (e.g., family vs. commodity).</li></ul>
+                    </li>
+                    <li class="definition-card"><span class="term">Grammar as Choice:</span> Grammar is not just a set of rules but a set of choices that allow speakers/writers to take a specific perspective on reality.
+                        <ul><li>Example: "John married Mary" (John's perspective) vs. "Mary married John" (Mary's perspective).</li></ul>
+                    </li>
+                    <li class="definition-card"><span class="term">Topic vs. Comment:</span>
+                        <ul class="sub-list-bullet">
+                            <li><strong>Topic (Subject):</strong> What the clause is about.</li>
+                            <li><strong>Comment (Predicate):</strong> What is said about the topic. Choosing a different topic changes the perspective of the sentence.</li>
+                        </ul>
+                    </li>
+                    <li class="definition-card"><span class="term">Asserted vs. Assumed Information:</span>
+                        <ul class="sub-list-bullet">
+                            <li><strong>Asserted (Independent Clause):</strong> Foregrounded info that is open to debate.</li>
+                            <li><strong>Assumed (Dependent Clause):</strong> Backgrounded info that the reader is expected to take for granted.</li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <h2 class="doc-section-title">Part 2: Core Arguments & Discussion</h2>
+                
+                <ol class="outline-list-1">
+                    <li class="outline-item-1">
+                        <div class="outline-title-1">Meaning is Choice (The "Bloodied" News Report)</div>
+                        <p>Gee analyzes a news headline to show how word choice constructs reality.</p>
+                        <ul class="outline-list-2">
+                            <li class="outline-item-2"><span class="label-highlight">The Headline:</span> "A white nationalist was bloodied Saturday while confronting protestors."</li>
+                            <li class="outline-item-2"><span class="label-highlight">The Choices:</span>
+                                <ul class="outline-list-3">
+                                    <li><strong>Word Choice:</strong> "Bloodied" implies violence/war (vs. "cut" or "injured").</li>
+                                    <li><strong>Topic Choice:</strong> Making the "white nationalist" the topic (subject) focuses on <strong>his</strong> experience, not the protestors' actions.</li>
+                                    <li><strong>Assumed Info:</strong> Putting the confrontation in a dependent clause ("while confronting...") makes the conflict background information, not the main point of debate.</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li class="outline-item-1">
+                        <div class="outline-title-1">The Social Contract of Grammar</div>
+                        <p>Gee argues that grammar creates a social contract between writer and reader.</p>
+                        <ul class="outline-list-2">
+                            <li class="outline-item-2"><span class="label-highlight">The Contract:</span> Readers are expected to challenge <strong>Asserted</strong> info but accept <strong>Assumed</strong> info.</li>
+                            <li class="outline-item-2"><span class="label-highlight">Manipulation:</span> Writers can manipulate this by hiding controversial claims in dependent clauses (e.g., "Trump was shouted down when he was telling the truth" forces the reader to accept "he was telling the truth" as background fact).</li>
+                        </ul>
+                    </li>
+
+                    <li class="outline-item-1">
+                        <div class="outline-title-1">AI vs. Human Meaning (The Leona Story)</div>
+                        <p>Gee compares human interpretation with ChatGPT-4 using a story by "Leona" (an African American child).</p>
+                        <ul class="outline-list-2">
+                            <li class="outline-item-2"><span class="label-highlight">The Story:</span> Leona tells a story about her grandmother baking cakes at home vs. buying cakes at a bakery.</li>
+                            <li class="outline-item-2"><span class="label-highlight">AI's Interpretation:</span> Focuses on <strong>Basic/Situational Meaning</strong> (Family love overcoming bad luck). It misses the deeper point.</li>
+                            <li class="outline-item-2"><span class="label-highlight">Human Interpretation (Thematic Meaning):</span> The story is about <strong>Signs and Symbols</strong>.
+                                <ul class="outline-list-3">
+                                    <li><strong>Home Cake:</strong> A symbol of kinship and love.</li>
+                                    <li><strong>Bakery Cake:</strong> A commodity/duplicitous symbol.</li>
+                                </ul>
+                            </li>
+                            <li class="outline-item-2"><span class="label-highlight">Theme:</span> The grandmother loses her human status (growls like a dog) because she mistook a commodity for a symbol of love.</li>
+                            <li class="outline-item-2"><span class="label-highlight">Conclusion:</span> AI understands definitions and contexts but (currently) misses the deep <strong>Thematic Meanings</strong> tied to human history and identity.</li>
+                        </ul>
+                    </li>
+                </ol>
+            </div>
+        </div>
+
+        <!-- Chapter 15 -->
+        <div id="ch15" class="hidden-chapter theme-ch15">
+            <div class="doc-content">
+                <div class="text-xs font-bold uppercase tracking-widest text-cyan-600 mb-2">Chapter 15</div>
+                <h1 class="doc-title">Sample of Discourse Analysis 1</h1>
+
+                <h2 class="doc-section-title">Part 1: Key Definitions</h2>
+                <ul class="definition-list">
+                    <li class="definition-card"><span class="term">I-Statements:</span> A tool of inquiry used to analyze identity by categorizing how a speaker refers to themselves.
+                        <ul class="sub-list-bullet">
+                            <li><strong>Cognitive:</strong> "I think," "I know" (Thinking/Knowing).</li>
+                            <li><strong>Affective:</strong> "I want," "I like" (Desiring/Liking).</li>
+                            <li><strong>State/Action:</strong> "I am mature," "I hit him" (Being/Doing).</li>
+                            <li><strong>Ability/Constraint:</strong> "I can't," "I have to" (Possibility/Necessity).</li>
+                            <li><strong>Achievement:</strong> "I want to go to MIT" (Mainstream success).</li>
+                        </ul>
+                    </li>
+                    <li class="definition-card"><span class="term">Habitus (Bourdieu):</span> One's habitual way of being in the world as an embodied social being. It is an ingrained trait or disposition (e.g., knowing how to act in a middle-class setting without thinking about it).</li>
+                    <li class="definition-card"><span class="term">Co-Construction (of Identity):</span> The principle that identities are not solo performances; they are mutually built by the speaker and the listener (interviewer).
+                        <ul><li>Example: An interviewer asks abstract questions to a Professor (constructing a "Global Voice") but local questions to a Teacher (constructing a "Local Voice").</li></ul>
+                    </li>
+                </ul>
+
+                <h2 class="doc-section-title">Part 2: Core Arguments & Discussion</h2>
+                
+                <ol class="outline-list-1">
+                    <li class="outline-item-1">
+                        <div class="outline-title-1">Class and Identity Building (Working Class vs. Upper Middle Class)</div>
+                        <p>Gee compares interviews with Working Class (WC) and Upper Middle Class (UMC) teens to show how they build different worlds.</p>
+                        <ul class="outline-list-2">
+                            <li class="outline-item-2"><span class="label-highlight">Working Class Teens (e.g., Jeremy, Maria):</span>
+                                <ul class="outline-list-3">
+                                    <li><strong>Worldview:</strong> Immersed in the "Lifeworld" (everyday social/dialogic interaction).</li>
+                                    <li><strong>I-Statements:</strong> High in <strong>Affective</strong> and <strong>State/Action</strong> statements.</li>
+                                    <li><strong>Logic:</strong> Their statements are dialogic (responses to ongoing arguments with parents/peers).</li>
+                                </ul>
+                            </li>
+                            <li class="outline-item-2"><span class="label-highlight">Upper Middle Class Teens (e.g., Brian, Karin):</span>
+                                <ul class="outline-list-3">
+                                    <li><strong>Worldview:</strong> Focused on "Achievement Space" and biographical trajectories (future success).</li>
+                                    <li><strong>I-Statements:</strong> High in <strong>Cognitive</strong> and <strong>Achievement</strong> statements.</li>
+                                    <li><strong>Logic:</strong> Their statements are abstract assessments/evaluations of their own success.</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li class="outline-item-1">
+                        <div class="outline-title-1">The "Restricted Code" Irony</div>
+                        <p>Gee challenges Bernstein's idea that working-class speech is "restricted."</p>
+                        <ul class="outline-list-2">
+                            <li class="outline-item-2"><span class="label-highlight">The Irony:</span>
+                                <ul class="outline-list-3">
+                                    <li><strong>WC Teens:</strong> Speak personally about diversity because they <strong>live</strong> it (diverse neighborhoods). Their code appears "restricted" but is grounded in rich experience.</li>
+                                    <li><strong>UMC Teens:</strong> Speak abstractly/distantly about diversity because they <strong>lack</strong> experience with it (segregated suburbs). Their code appears "elaborated" (complex syntax) but is actually a way to "cloak" their lack of experience and personal anxiety about achievement.</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li class="outline-item-1">
+                        <div class="outline-title-1">Narrative as Identity Work (The "Brian" Case)</div>
+                        <p>Gee analyzes a story by Brian (UMC teen) to show how narratives rationalize identity.</p>
+                        <ul class="outline-list-2">
+                            <li class="outline-item-2"><span class="label-highlight">The Story:</span> Brian tells a story about being a "spaz" (outsider) who got angry when people cheated, but then decided to "stop" and became normal.</li>
+                            <li class="outline-item-2"><span class="label-highlight">The Theme:</span> A "redemptive moment" where <strong>Rationality overcomes Emotion</strong>.</li>
+                            <li class="outline-item-2"><span class="label-highlight">The Identity:</span> Brian constructs a Middle-Class Identity: one must suppress emotion (anger at unfairness) to succeed in competition. This explains why he is less passionate about social justice (racism) later in the interview—he has trained himself to ignore unfairness to "win."</li>
+                        </ul>
+                    </li>
+                </ol>
+            </div>
+        </div>
+
+        <!-- Chapter 16 -->
+        <div id="ch16" class="hidden-chapter theme-ch16">
+            <div class="doc-content">
+                <div class="text-xs font-bold uppercase tracking-widest text-pink-600 mb-2">Chapter 16</div>
+                <h1 class="doc-title">Sample of Discourse Analysis 2</h1>
+
+                <h2 class="doc-section-title">Part 1: Key Definitions</h2>
+                <ul class="definition-list">
+                    <li class="definition-card"><span class="term">Motifs:</span> Recurring themes, images, or ideas that "co-locate" (correlate) throughout a text, giving it coherence and texture.
+                        <ul><li>Sandra's Motifs: <strong>Disconnection</strong> (things don't connect), <strong>Not Caring</strong> (indifference as a defense), and <strong>Language/Laughter</strong> (noise/affect as resistance).</li></ul>
+                    </li>
+                    <li class="definition-card"><span class="term">The Principle of the Echo:</span> A narrative device where later parts of a text mirror or repeat earlier parts (common in oral storytelling).
+                        <ul><li>Example: In Sandra's story, the boyfriend's laughter in the first sub-story is echoed by the sister's sigh in the second.</li></ul>
+                    </li>
+                    <li class="definition-card"><span class="term">Restoration of a Lack/Loss:</span> A classic narrative closing device where something lost (e.g., a table) is returned or restored, resolving the conflict.</li>
+                    <li class="definition-card"><span class="term">Parallelism (Equivalence Logic):</span> Structuring a text so that different parts (stanzas) mirror each other in structure or content, creating meaning through comparison.
+                        <ul><li>Function: It equates different events (e.g., breaking a fan and breaking a table) to show they share the same underlying logic.</li></ul>
+                    </li>
+                </ul>
+
+                <h2 class="doc-section-title">Part 2: Core Arguments & Discussion</h2>
+                
+                <ol class="outline-list-1">
+                    <li class="outline-item-1">
+                        <div class="outline-title-1">Sandra's Worldview (The Three Motifs)</div>
+                        <p>Gee analyzes the interview of "Sandra" (a working-class teen) to reveal her specific Figured World.</p>
+                        <ul class="outline-list-2">
+                            <li class="outline-item-2"><span class="label-highlight">The Motifs:</span>
+                                <ul class="outline-list-3">
+                                    <li><strong>Disconnection:</strong> Actions have no consequences (boyfriend doesn't get punished).</li>
+                                    <li><strong>Not Caring:</strong> A stance of indifference to authority and judgment.</li>
+                                    <li><strong>Language/Laughter:</strong> A preference for affective, noisy, non-sense language over "authoritative" language.</li>
+                                </ul>
+                            </li>
+                            <li class="outline-item-2"><span class="label-highlight">The Argument:</span> Sandra constructs a world where "Authoritative Representation" (facts/truth spoken by adults/schools) is hurtful and "stupid," while "Sympathetic Social Interaction" (laughter/affect) is the only thing that heals.</li>
+                        </ul>
+                    </li>
+
+                    <li class="outline-item-1">
+                        <div class="outline-title-1">Validity through Convergence (Motifs + Narrative)</div>
+                        <p>Gee uses this chapter to demonstrate <strong>Validity</strong>.</p>
+                        <ul class="outline-list-2">
+                            <li class="outline-item-2"><span class="label-highlight">The Method:</span> He shows that the themes found in the <strong>entire interview</strong> (Motifs) converge with the themes found in the <strong>specific narrative</strong> ("The Return of the Table").</li>
+                            <li class="outline-item-2"><span class="label-highlight">Result:</span> Because the broad data and the specific narrative support the same conclusion (Sandra's rejection of authority), the analysis has high validity (Coverage).</li>
+                        </ul>
+                    </li>
+
+                    <li class="outline-item-1">
+                        <div class="outline-title-1">The Narrative Structure ("The Return of the Table")</div>
+                        <p>Gee analyzes Sandra's story to show it is not a rambling mess but a tightly structured oral narrative.</p>
+                        <ul class="outline-list-2">
+                            <li class="outline-item-2"><span class="label-highlight">Structure:</span> Two parallel sub-stories about "Breaking."</li>
+                            <li class="outline-item-2"><span class="label-highlight">Sub-story 1 (Loss):</span> Boyfriend breaks a fan (accident/play) -> Laughes -> No consequence.</li>
+                            <li class="outline-item-2"><span class="label-highlight">Sub-story 2 (Gain/Restoration):</span> Boyfriend breaks himself (accident/injury) -> Gets money -> Restores the table unasked.</li>
+                            <li class="outline-item-2"><span class="label-highlight">Theme:</span> A world of accidents, play, and restoration where "authoritative commands" (Mother saying "Stop") are ignored, but affective bonds remain.</li>
+                        </ul>
+                    </li>
+
+                    <li class="outline-item-1">
+                        <div class="outline-title-1">Identity as Opposition to School</div>
+                        <p>Gee concludes that Sandra's identity work is fundamentally at odds with the institution of School.</p>
+                        <ul class="outline-list-2">
+                            <li class="outline-item-2"><span class="label-highlight">The Conflict:</span> Schools value <strong>Authoritative Representation</strong> (facts, truth, rules). Sandra values <strong>Sympathetic Interaction</strong> (caring, laughter, noise).</li>
+                            <li class="outline-item-2"><span class="label-highlight">The Outcome:</span> Unless the school adapts to understand her "Caring Model," she will disaffiliate from education, viewing it as "uncaring" and "making no sense."</li>
+                        </ul>
+                    </li>
+                </ol>
+            </div>
+        </div>
+
+        <!-- Chapter 17 -->
+        <div id="ch17" class="hidden-chapter theme-ch17">
+            <div class="doc-content">
+                <div class="text-xs font-bold uppercase tracking-widest text-stone-600 mb-2">Chapter 17</div>
+                <h1 class="doc-title">Multimodality</h1>
+
+                <h2 class="doc-section-title">Part 1: Key Definitions</h2>
+                <ul class="definition-list">
+                    <li class="definition-card"><span class="term">Multimodality:</span> The use of different modes of communication (words, images, music, gesture, movement) within a single text to create meaning.
+                        <ul><li>Examples: Opera, Video Games, Textbooks with diagrams, Face-to-Face conversation (which uses gesture/gaze).</li></ul>
+                    </li>
+                    <li class="definition-card"><span class="term">Mode (Gunther Kress):</span> A "socially and culturally shaped resource for making meaning."
+                        <ol class="sub-list-numbered">
+                            <li><em>The 5 Modes (New London Group):</em> Visual, Linguistic, Spatial, Aural, and Gestural.</li>
+                        </ol>
+                    </li>
+                    <li class="definition-card"><span class="term">Sensual Constructions:</span> A concept Gee introduces to describe multimodal symbols that blend <strong>Sensation</strong> with <strong>Meaning</strong>.
+                        <ul>
+                            <li>Definition: Experienced clusters of sensation and feeling that take on deep situational meaning over time.</li>
+                            <li>Example: The <strong>Madeleine Cookie</strong> (Proust) or the <strong>Red Scarf</strong> (Attack on Titan). It is not just an object; it is a multisensory experience that triggers memory/theme.</li>
+                        </ul>
+                    </li>
+                    <li class="definition-card"><span class="term">System of Systems (Video Games):</span> Gee defines video games as a complex multimodal system composed of two melded systems:
+                        <ul class="sub-list-bullet">
+                            <li><strong>The Game World:</strong> The fictional world the player sees/moves in (Graphics, Action).</li>
+                            <li><strong>The User Interface:</strong> The HUD, menus, and maps that communicate game data to the player.</li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <h2 class="doc-section-title">Part 2: Core Arguments & Discussion</h2>
+                
+                <ol class="outline-list-1">
+                    <li class="outline-item-1">
+                        <div class="outline-title-1">Sensation and Situational Meaning (Proust & Anime)</div>
+                        <p>Gee argues that Multimodality allows sensation to ground language.</p>
+                        <ul class="outline-list-2">
+                            <li class="outline-item-2"><span class="label-highlight">The Case Studies:</span>
+                                <ul class="outline-list-3">
+                                    <li><strong>Proust's Cookie:</strong> The taste/texture of the madeleine is a sensory trigger for "Involuntary Memory." The cookie becomes a <strong>Sensual Construction</strong> exploring time and memory.</li>
+                                    <li><strong>Attack on Titan's Red Scarf:</strong> A visual/narrative symbol. Initially, it means "warmth/safety" (Eren saving Mikasa). Over the series, it accumulates meanings of "loyalty," "loss," and finally "letting go."</li>
+                                </ul>
+                            </li>
+                            <li class="outline-item-2"><span class="label-highlight">The Point:</span> Meaning is not just verbal definitions; it is built through recurring sensory experiences.</li>
+                        </ul>
+                    </li>
+
+                    <li class="outline-item-1">
+                        <div class="outline-title-1">Discourse in Video Games (Metal Gear Solid)</div>
+                        <p>Gee analyzes <strong>Metal Gear Solid</strong> to show how games create a unique <strong>Discourse</strong>.</p>
+                        <ul class="outline-list-2">
+                            <li class="outline-item-2"><span class="label-highlight">The Discourse:</span> The "Solid Snake Discourse" involves specific:
+                                <ul class="outline-list-3">
+                                    <li><strong>Saying:</strong> Philosophical dialog mixed with technical military jargon.</li>
+                                    <li><strong>Doing:</strong> Stealth activities (sneaking, hiding), not just shooting.</li>
+                                    <li><strong>Being:</strong> An identity of a weary, ethical soldier.</li>
+                                </ul>
+                            </li>
+                            <li class="outline-item-2"><span class="label-highlight">The Melding:</span> Games are unique because they meld two Discourses: the Character's (Snake) and the Player's (me playing Snake). The player must enact the identity (be a "good Snake") to succeed.</li>
+                            <li class="outline-item-2"><span class="label-highlight">Key Slide Addition (Radar Map):</span> The professor highlighted the "Radar Map" in MGS as an example of how <strong>function determines mode</strong>.
+                                <ul class="outline-list-3">
+                                    <li><strong>Mode 1 (Simple Screen):</strong> It looks like a simple 2D game.</li>
+                                    <li><strong>Mode 2 (UI Element):</strong> In the context of the 3D game, it functions as a "User Interface" allowing the player to look through walls. The same visual has different modes depending on its function.</li>
+                                </ul>
+                            </li>
+                            <li class="outline-item-2"><span class="label-highlight">Specific Modalities in MGS (Slide List):</span> The slides explicitly list these 9 modes for MGS:
+                                <ul class="outline-list-3">
+                                    <li>Graphics</li>
+                                    <li>Written Language</li>
+                                    <li>Spoken Language</li>
+                                    <li>Characters/Actions/Environments</li>
+                                    <li>Game Mechanics</li>
+                                    <li>Sound</li>
+                                    <li>Music</li>
+                                    <li>Haptic (Touch)</li>
+                                    <li>User Interface</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li class="outline-item-1">
+                        <div class="outline-title-1">Multimodality and "Thematic Meaning"</div>
+                        <p>Gee connects this back to Chapter 14.</p>
+                        <ul class="outline-list-2">
+                            <li class="outline-item-2"><span class="label-highlight">The Argument:</span> Just as words can have deep Thematic Meaning (values/identity), so can images and actions in multimodal texts.</li>
+                            <li class="outline-item-2"><span class="label-highlight">Example:</span> The "Red Scarf" isn't just a red object; it carries the <strong>Thematic Meaning</strong> of human connection in a cruel world.</li>
+                            <li class="outline-item-2"><span class="label-highlight">Conclusion:</span> Discourse Analysis applies to <strong>all</strong> meaningful human communication, not just speech, because "saying, being, and doing always swim in a sea of human sensations."</li>
+                        </ul>
+                    </li>
+                </ol>
+            </div>
+        </div>
+
+    </main>
+
+    <script>
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('collapsed');
+            document.getElementById('main').classList.toggle('expanded');
+        }
+
+        function showChapter(chId) {
+            document.querySelectorAll('.active-chapter').forEach(el => {
+                el.classList.remove('active-chapter');
+                el.classList.add('hidden-chapter');
+            });
+            
+            const chapter = document.getElementById(chId);
+            chapter.classList.remove('hidden-chapter');
+            chapter.classList.add('active-chapter');
+
+            window.scrollTo({top: 0, behavior: 'smooth'});
+
+            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+            document.getElementById('nav-' + chId).classList.add('active');
+
+            if (window.innerWidth < 768) {
+                toggleSidebar();
+            }
+        }
+
+        function adjustFont(change) {
+            const body = document.body;
+            let currentSize = parseInt(window.getComputedStyle(body).fontSize);
+            if (!currentSize) currentSize = 16;
+            
+            let newSize = currentSize + change;
+            if (newSize < 14) newSize = 14;
+            if (newSize > 24) newSize = 24;
+            
+            body.style.fontSize = newSize + 'px';
+        }
+    </script>
+</body>
+</html>
