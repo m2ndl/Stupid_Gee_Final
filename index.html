@@ -39,6 +39,7 @@
         .theme-ch15 { --accent: #00b5d8; --highlight: #e0fbfc; --text-accent: #00768c; }
         .theme-ch16 { --accent: #d53f8c; --highlight: #fff5f7; --text-accent: #97266d; }
         .theme-ch17 { --accent: #8d6e63; --highlight: #efebe9; --text-accent: #5d4037; }
+        .theme-expected { --accent: #475569; --highlight: #f1f5f9; --text-accent: #1e293b; }
 
         /* --- Layout --- */
         .sidebar {
@@ -99,7 +100,6 @@
         .doc-content ul > li::marker { color: var(--accent); font-weight: bold; }
         .doc-content ol > li::marker { color: var(--text-accent); font-weight: bold; }
 
-        /* Nested Lists */
         .doc-content li > ul, .doc-content li > ol {
             margin-top: 0.5rem; margin-bottom: 0.5rem; padding-left: 2rem; border-left: 2px solid #e2e8f0;
         }
@@ -242,7 +242,10 @@
         </div>
         
         <div class="flex-1 overflow-y-auto py-4 space-y-1">
-            <div class="nav-item" onclick="showRecall()" id="nav-recall" style="color: #60a5fa; margin-bottom: 1rem;">
+            <div class="nav-item" onclick="showChapter('expected')" id="nav-expected" style="color: #fbbf24; margin-bottom: 0.5rem; font-weight: 700;">
+                <span class="mr-2">★</span> Expected Questions
+            </div>
+            <div class="nav-item" onclick="showRecall()" id="nav-recall" style="color: #60a5fa; margin-bottom: 1rem; font-weight: 700;">
                 <span class="mr-2">✍️</span> Active Recall Mode
             </div>
             <div class="nav-item" onclick="showChapter('ch6')" id="nav-ch6">Ch 6: Conversations</div>
@@ -266,6 +269,225 @@
         <div id="welcome" class="active-chapter doc-content border-t-0 border-l-4 border-gray-800">
             <h1 class="doc-title text-4xl">Study Guide</h1>
             <p class="text-lg text-gray-600 mt-4 leading-relaxed">Select a chapter from the sidebar to begin reading, or select <strong>Active Recall Mode</strong> to test your memory by writing.</p>
+            <div class="mt-8 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+                <h3 class="text-lg font-bold text-yellow-800 mb-2">New: Model Answers Added</h3>
+                <p class="text-yellow-700">Check the <strong>Expected Questions</strong> section for PhD-level model answers for definitions and discussion questions.</p>
+            </div>
+        </div>
+
+        <!-- Expected Questions Section -->
+        <div id="expected" class="hidden-chapter theme-expected">
+            <div class="doc-content">
+                <div class="text-xs font-bold uppercase tracking-widest text-gray-600 mb-2">Model Answers</div>
+                <h1 class="doc-title">Expected Questions</h1>
+                <p class="text-gray-600 mb-8 italic">Here are the model answers for the Definitions and Discussion questions. These are crafted to be comprehensive enough for a PhD-level "Discuss and Define" exam, using the specific terminology and examples from the book.</p>
+
+                <h2 class="doc-section-title">Section 1: Model Answers for Definitions</h2>
+                
+                <ul class="definition-list">
+                    <li class="definition-card">
+                        <span class="term">1. Big ‘C’ Conversations</span>
+                        <strong>Definition:</strong> A "Big ‘C’ Conversation" refers to public debates, arguments, motifs, issues, or themes that circulate widely within a society or social group (e.g., debates over abortion, smoking, or affirmative action). Unlike everyday conversations between individuals, these are metaphorical conversations that exist historically and institutionally. Gee describes them as the way "Discourses use us humans" to talk to and against each other. To understand a text fully, one must know which "Big C Conversation" it is responding to.
+                    </li>
+                    <li class="definition-card">
+                        <span class="term">2. Intertextuality</span>
+                        <strong>Definition:</strong> Originally a literary term derived from Bakhtin, Kristeva, and Barthes, intertextuality refers to the way texts refer to, allude to, or quote other texts. In Gee’s framework, it has a broader meaning: it includes the mixing or juxtaposing of different Social Languages (distinctive styles of language associated with specific Discourses) within a single text. For example, a speaker might mix "academic language" with "everyday vernacular" to achieve a specific social effect.
+                    </li>
+                    <li class="definition-card">
+                        <span class="term">3. Figured Worlds (Cultural Models)</span>
+                        <strong>Definition:</strong> A concept developed by Dorothy Holland, Figured Worlds are simplified, often unconscious theories, stories, or models about how the world works that we use to process information efficiently. They are "socially and culturally constructed realms of interpretation" where specific characters and acts are recognized and valued (e.g., the "Success Model" in the US). They function as a tool of inquiry that mediates between the "micro" level of social interaction and the "macro" level of institutions.
+                    </li>
+                    <li class="definition-card">
+                        <span class="term">4. Situational Meaning vs. Basic Meaning</span>
+                        <strong>Definition:</strong> Basic Meaning is the general, dictionary-style definition of a word (e.g., "Coffee" is a beverage). Situational Meaning is the specific meaning a word takes on in a specific context of use, negotiated by participants on the spot. For example, in the context "The coffee spilled, get a broom," the situational meaning of "coffee" is grains or beans, not liquid. Discourse analysis focuses on how context shapes situational meaning.
+                    </li>
+                    <li class="definition-card">
+                        <span class="term">5. Thematic Meaning</span>
+                        <strong>Definition:</strong> A third level of meaning (deeper than Basic or Situational) that connects a text to the core themes, values, and identities of a culture or institution. It is often implicit and built through recurring patterns or motifs (e.g., repetition, parallelism). In the example of Leona’s story, the "home-baked cake" carried the thematic meaning of kinship, while the "bakery cake" carried the thematic meaning of commodity.
+                    </li>
+                    <li class="definition-card">
+                        <span class="term">6. Reflexivity</span>
+                        <strong>Definition:</strong> The "magical" property of language where it simultaneously reflects the context (what is physically or historically present) and constructs the context (how the participants view the situation). It is like two mirrors facing each other. For example, speaking casually to a colleague reflects the fact that you are friends, but it also constructs the interaction as "friendly" in that moment.
+                    </li>
+                    <li class="definition-card">
+                        <span class="term">7. Multimodality</span>
+                        <strong>Definition:</strong> The use of different modes of communication (such as words, images, music, gesture, gaze, and movement) within a single text or interaction to create meaning. According to Gunther Kress, a "mode" is a socially and culturally shaped resource for making meaning. In multimodal texts (like video games or face-to-face conversation), different modes interact to provide context and grounding for one another.
+                    </li>
+                    <li class="definition-card">
+                        <span class="term">8. Sensual Constructions</span>
+                        <strong>Definition:</strong> A concept introduced by Gee to describe multimodal symbols that blend abstract meaning with embodied sensation. They are experienced clusters of sensation and feeling that accumulate deep situational meaning over time. Examples include the Madeleine cookie in Proust (which triggers involuntary memory through taste) or the Red Scarf in Attack on Titan (which visually symbolizes safety, loyalty, and loss).
+                    </li>
+                    <li class="definition-card">
+                        <span class="term">9. Habitus</span>
+                        <strong>Definition:</strong> A term from sociologist Pierre Bourdieu referring to one's habitual, embodied way of being in the world. It includes ingrained dispositions, tastes, and ways of acting that signal one's social class or status (e.g., knowing how to act in an elite school without thinking about it). In discourse analysis, narratives are often used to rationalize or construct a person's habitus (e.g., Brian explaining how he learned to suppress emotion to fit in).
+                    </li>
+                    <li class="definition-card">
+                        <span class="term">10. The Frame Problem</span>
+                        <strong>Definition:</strong> The theoretical dilemma that context is indefinitely large (ranging from local eye gaze to global history). The "problem" is that any new aspect of context we consider could change our interpretation of the text. However, Gee argues this is also a "tool": analysts must widen the "frame" (context) until the interpretation stabilizes, and use the widening process to see what information the speaker is leaving unsaid or effacing.
+                    </li>
+                    <li class="definition-card">
+                        <span class="term">11. Co-Construction (of Identity)</span>
+                        <strong>Refined Answer:</strong> Co-construction is the principle that Socially Situated Identities are not solitary performances but are mutually built through interaction. An identity is not just claimed by a speaker; it must be ratified by the listener. In Chapter 15, Gee demonstrates that the Interviewer plays a crucial role in constructing the subject's identity. For instance, the same interviewer constructed a "Global/Abstract Voice" for a College Professor by asking theoretical questions, but constructed a "Local/Personal Voice" for a Middle School Teacher by asking concrete, local questions. Thus, the identity in the transcript is a joint product.
+                    </li>
+                    <li class="definition-card">
+                        <span class="term">12. Motifs</span>
+                        <strong>Refined Answer:</strong> Motifs are recurring themes, images, or ideas that "co-locate" (correlate) throughout a text, giving it texture and coherence. By tracing these threads, an analyst can uncover the speaker's underlying Figured World. In Chapter 16, Gee traces three motifs in Sandra’s interview: Disconnection (actions lacking consequences), Not Caring (indifference as defense), and Language/Laughter (using noise/affect to resist authority). These motifs reveal her worldview that "authoritative representation" is hurtful, while sympathetic interaction is safe.
+                    </li>
+                    <li class="definition-card">
+                        <span class="term">13. Topic vs. Comment</span>
+                        <strong>Refined Answer:</strong> This distinction refers to the information structure of a sentence, which dictates Perspective.
+                        <ul class="sub-list-bullet">
+                            <li><strong>Topic (Subject):</strong> The entity the sentence is about (the starting point).</li>
+                            <li><strong>Comment (Predicate):</strong> What is said about the topic.</li>
+                        </ul>
+                        <strong>Relevance:</strong> Writers choose the Topic to frame reality. In the headline "A white nationalist was bloodied," the nationalist is the Topic, creating a perspective of victimhood. If the writer chose "Protestors" as the Topic ("Protestors bloodied..."), the perspective would focus on their agency/aggression.
+                    </li>
+                    <li class="definition-card">
+                        <span class="term">14. Asserted vs. Assumed Information</span>
+                        <strong>Refined Answer:</strong> This refers to the "Social Contract" established by clause structure regarding what is open to debate.
+                        <ul class="sub-list-bullet">
+                            <li><strong>Asserted Information:</strong> Information in the Independent Clause. It is foregrounded and is the specific claim the speaker asks the listener to accept or reject.</li>
+                            <li><strong>Assumed Information:</strong> Information in the Dependent/Subordinate Clause. It is backgrounded and treated as taken-for-granted. Writers can manipulate this to force readers to accept controversial premises (e.g., "Trump was shouted down when he was telling the truth" forces the reader to accept the truth-telling as undebatable background fact).</li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <h2 class="doc-section-title">Section 2: Model Answers for Discussion Questions</h2>
+
+                <h3 class="doc-subtitle">Q1: Discuss the relationship between Context and Language. How do they influence each other?</h3>
+                <div class="text-block">
+                    <span class="label-highlight">Answer:</span> In Discourse Analysis, the relationship between context and language is not one-way; it is defined by the principle of Reflexivity. Traditionally, one might ask whether the context determines what we say (e.g., "I am at work, so I must speak formally") or if what we say determines the context (e.g., "I am speaking formally, so this must be a formal situation"). Gee argues that the answer is both.
+                </div>
+                <div class="text-block">
+                    Language and context are like two mirrors facing each other, endlessly reflecting. Language always reflects the reality that is "out there" (the physical setting, the history of the speakers). However, language also constructs (or construes) that reality by signaling which parts of the context are relevant. For example, if a speaker points to an object and says, "This duck bothers me," their language has constructed the rubber duck as a relevant part of the context; without the speech, the duck is just background noise.
+                </div>
+                <div class="text-block">
+                    Therefore, context is not a passive backdrop; it is Actively Created. Speakers use grammatical cues (like "The" vs. "A," or specific social languages) to guide the listener in building the context. Interpretation is the process of following these cues to understand what the speaker takes the context to be.
+                </div>
+
+                <h3 class="doc-subtitle">Q2: Discuss the nature of Validity in Discourse Analysis. How can an analysis be considered "valid" if it is an interpretation?</h3>
+                <div class="text-block">
+                    <span class="label-highlight">Answer:</span> Gee argues that validity in discourse analysis is not about "reflecting reality" in a simple, objective sense, because humans have no access to reality except through interpretation. Therefore, a discourse analysis is an "interpretation of an interpretation." Instead of objective "truth," validity is about Trustworthiness.
+                </div>
+                <div class="text-block">
+                    Validity is established through a social and cumulative process involving four specific elements:
+                    <ul class="sub-list-bullet">
+                        <li><strong>Convergence:</strong> The analysis is more valid if answers to the different "Tools of Inquiry" (e.g., questions about Identity, Politics, and Connections) all support the same conclusion.</li>
+                        <li><strong>Agreement:</strong> The analysis gains validity if "native speakers" of the Discourse or other scholars agree that it is a plausible reading of how that social language functions.</li>
+                        <li><strong>Coverage:</strong> The analysis is valid if it can explain not just the current data, but related data (e.g., predicting what happened before or after the interaction).</li>
+                        <li><strong>Linguistic Details:</strong> The analysis must be tightly tied to specific grammatical structures (syntax, intonation, stress) to prove it is grounded in the text, not just the analyst's opinion.</li>
+                    </ul>
+                </div>
+                <div class="text-block">
+                    Ultimately, validity is never "once and for all." It is a social judgment made by the community of researchers over time.
+                </div>
+
+                <h3 class="doc-subtitle">Q3: Discuss how Grammar functions as a tool of "Choice" and "Perspective-Taking."</h3>
+                <div class="text-block">
+                    <span class="label-highlight">Answer:</span> Gee posits that grammar is not merely a set of rules for correctness, but a system of Choice. Every time a speaker or writer constructs a sentence, they must choose between different grammatical forms, and each choice allows them to take a specific perspective on reality.
+                </div>
+                <div class="text-block">
+                    Key grammatical choices include:
+                    <ul class="sub-list-bullet">
+                        <li><strong>Topic vs. Comment:</strong> What is made the subject of the sentence (the Topic) determines the perspective. Saying "The protestors bloodied the man" focuses on the protestors' agency. Saying "The man was bloodied" focuses on the man's victimhood.</li>
+                        <li><strong>Agents:</strong> Writers can choose to include or exclude the agent of an action (e.g., using passive voice to hide who committed an act).</li>
+                        <li><strong>Asserted vs. Assumed Information:</strong> Information in an independent clause is Asserted (foregrounded and open to debate). Information in a dependent clause is Assumed (backgrounded and taken for granted).</li>
+                    </ul>
+                </div>
+                <div class="text-block">
+                    Writers often manipulate these choices to construct a specific reality. For example, the headline "A white nationalist was bloodied while confronting protestors" uses word choice ("bloodied"), topic choice (the nationalist), and assumed information (the confrontation is in a dependent clause) to construct a perspective where the nationalist is the victim of a chaotic event, rather than an instigator.
+                </div>
+
+                <h3 class="doc-subtitle">Q4: Discuss the cognitive aspect of discourse: How do "Simulations" and "Figured Worlds" shape our understanding?</h3>
+                <div class="text-block">
+                    <span class="label-highlight">Answer:</span> Gee argues that human understanding is not based on static dictionary definitions but on dynamic Mental Simulations. When we hear a word or concept (like "Wedding"), our mind runs a simulation—essentially a mental movie or video game—based on our past experiences and cultural norms.
+                </div>
+                <div class="text-block">
+                    These simulations are guided by Figured Worlds (or Cultural Models), which are simplified stories about what is "normal" or "typical" (e.g., the "Cultivation Model" of parenting). We have:
+                    <ul class="sub-list-bullet">
+                        <li><strong>Prototypical Simulations:</strong> The default simulation we run when we assume a situation is typical.</li>
+                        <li><strong>Special-Case Simulations:</strong> Adaptations we make when reality contradicts the prototype.</li>
+                    </ul>
+                </div>
+                <div class="text-block">
+                    The danger of Figured Worlds is that they can "colonize" our minds. As seen in the study of working-class men (Chapter 9), people can hold an Evaluative World (e.g., "The American Dream") that contradicts their World-in-Action (e.g., prioritizing family over career). This leads to internal conflict where people judge themselves as failures because their lived reality does not match the dominant cultural simulation they use to evaluate themselves.
+                </div>
+
+                <h3 class="doc-subtitle">Q5: Human Meaning vs. AI Meaning (ChatGPT)</h3>
+                <div class="text-block">
+                    <span class="label-highlight">Thesis:</span> While AI is articulate, it lacks the capacity for Thematic Meaning, which is the deepest level of human communication.
+                </div>
+                <div class="text-block">
+                    <span class="label-highlight">Evidence:</span> AI processes Basic and Situational meaning based on probability (frequency). It can summarize Leona’s story as "family love overcoming bad luck." However, it misses the Thematic Meaning rooted in human history and culture. It fails to see that Leona’s story is a symbolic clash between Kinship (the home-baked cake) and Commodity (the bakery cake), where the grandmother loses her human status ("growls like a dog") by mistaking a commodity for love.
+                </div>
+                <div class="text-block">
+                    <span class="label-highlight">Conclusion:</span> Meaning is not just processing definitions; it is connected to "forms of life" and identity, which AI lacks.
+                </div>
+
+                <h3 class="doc-subtitle">Q6: Transcription as Analysis</h3>
+                <div class="text-block">
+                    <span class="label-highlight">Thesis:</span> Transcription is not a neutral recording; it is a "Theoretical Entity" representing the analyst's choices about what is relevant.
+                </div>
+                <div class="text-block">
+                    <span class="label-highlight">Evidence:</span> Speech is physically produced in Spurts (Idea Units), representing single focuses of consciousness. A valid analysis must capture Intonation (Pitch/Stress) because in English, Focus Stress marks New Information. In the "Light" case study, the researcher misunderstood the child because she ignored the pitch cues that signaled the child was making a logical connection between the sun and dinosaurs.
+                </div>
+                <div class="text-block">
+                    <span class="label-highlight">Conclusion:</span> To transcribe is to analyze; leaving out details like stress is a theoretical choice that can obscure meaning.
+                </div>
+
+                <h3 class="doc-subtitle">Q7: Identity and Social Class</h3>
+                <div class="text-block">
+                    <span class="label-highlight">Thesis:</span> Working Class (WC) and Upper Middle Class (UMC) teens use distinct Social Languages to build fundamentally different worlds.
+                </div>
+                <div class="text-block">
+                    <span class="label-highlight">Evidence:</span>
+                    <ul class="sub-list-bullet">
+                        <li><strong>WC Teens (e.g., Jeremy):</strong> Construct identity through Narrative and immersion in the Lifeworld (everyday interaction). Their "I-Statements" are Affective ("I want").</li>
+                        <li><strong>UMC Teens (e.g., Brian):</strong> Construct identity oriented toward Achievement Space. They view life as a biographical trajectory toward success. Their "I-Statements" are Cognitive ("I assess"), used to evaluate their own standing.</li>
+                    </ul>
+                </div>
+                <div class="text-block">
+                    <span class="label-highlight">Significance:</span> This challenges Bernstein’s "Restricted Code" theory. WC teens actually speak eloquently about diversity because they live it, while UMC teens use abstract language to "cloak" their lack of experience and anxiety about achievement.
+                </div>
+
+                <h3 class="doc-subtitle">Q8: Grammar as Choice</h3>
+                <div class="text-block">
+                    <span class="label-highlight">Thesis:</span> Grammar is a set of tools for taking a Perspective on reality; meaning is derived from what is chosen versus what was available but not chosen.
+                </div>
+                <div class="text-block">
+                    <span class="label-highlight">Evidence:</span>
+                    <ul class="sub-list-bullet">
+                        <li><strong>Lexical Choice:</strong> Using "bloodied" vs. "injured" frames an event as war-like.</li>
+                        <li><strong>Topic Choice:</strong> Selecting the "White Nationalist" as the subject focuses empathy on him.</li>
+                        <li><strong>Structural Choice:</strong> Placing conflict in a dependent clause ("while confronting...") makes it Assumed Info, shielding it from debate.</li>
+                    </ul>
+                </div>
+                <div class="text-block">
+                    <span class="label-highlight">Conclusion:</span> Grammar is political; it constructs the "reality" the reader is asked to accept.
+                </div>
+
+                <h3 class="doc-subtitle">Q9: Narrative Structure in Oral Culture</h3>
+                <div class="text-block">
+                    <span class="label-highlight">Thesis:</span> Oral storytelling (specifically in African American culture, e.g., Leona/Sandra) is not unstructured; it follows a rigorous Macro-Structure and poetic logic.
+                </div>
+                <div class="text-block">
+                    <span class="label-highlight">Evidence:</span> These stories are organized into Stanzas (clumps of lines with one perspective). They often use Parallelism (or the "Principle of the Echo"). In Sandra’s story, the "breaking of the fan" (Sub-story 1) mirrors the "breaking of the table" (Sub-story 2). This creates an "Equivalence Logic"—forcing the listener to compare events to derive the theme (e.g., that authoritative commands are ignored, but affective bonds remain).
+                </div>
+                <div class="text-block">
+                    <span class="label-highlight">Conclusion:</span> Oral culture possesses complex literary strategies distinct from, but equal to, written literacy.
+                </div>
+                
+                <h3 class="doc-subtitle">Q10: Discuss the role of Multimodality in modern discourse.</h3>
+                <div class="text-block">
+                    <span class="label-highlight">Answer:</span> Discourse analysis must extend beyond language because human communication is inherently Multimodal. Meaning is created through the interaction of multiple modes (words, images, gesture, sound, movement). According to Kress, a mode is any "socially shaped resource for making meaning."
+                </div>
+                <div class="text-block">
+                    Multimodality allows for Sensual Constructions, where abstract meanings are grounded in physical sensation. For example, in In Search of Lost Time, the taste of the madeleine cookie is not just a sensory event; it becomes a symbol for the nature of time and memory. Similarly, in video games like Metal Gear Solid, meaning is built through a "System of Systems": the Game World (graphics/action) and the User Interface (maps/data) meld to create a unique Discourse.
+                </div>
+                <div class="text-block">
+                    In this context, the visual is not just "decoration"; it determines the mode based on function. As shown in the Metal Gear Solid radar map example, the same image can function as a simple 2D game in one context or a complex tactical interface in another. Therefore, analyzing discourse requires looking at how "saying, doing, and being" interact with sensation and design.
+                </div>
+            </div>
         </div>
 
         <!-- Active Recall Section -->
@@ -1281,7 +1503,6 @@
             const sidebar = document.getElementById('sidebar');
             const main = document.getElementById('main');
             
-            // Check if mobile
             if (window.innerWidth <= 768) {
                 sidebar.classList.toggle('mobile-open');
             } else {
@@ -1291,21 +1512,23 @@
         }
 
         function showChapter(chId) {
-            // Hide all views
             document.querySelectorAll('.active-chapter').forEach(el => {
                 el.classList.remove('active-chapter');
                 el.classList.add('hidden-chapter');
             });
             document.getElementById('recall-section').classList.add('hidden-chapter');
             
-            // Show new chapter
             const chapter = document.getElementById(chId);
+            if (!chapter) {
+                console.error('Chapter not found:', chId);
+                return; // Prevent crash
+            }
+            
             chapter.classList.remove('hidden-chapter');
             chapter.classList.add('active-chapter');
 
             window.scrollTo({top: 0, behavior: 'smooth'});
 
-            // Nav State
             document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
             const navItem = document.getElementById('nav-' + chId);
             if(navItem) navItem.classList.add('active');
@@ -1324,8 +1547,10 @@
 
             // Show Recall Section
             const recall = document.getElementById('recall-section');
-            recall.classList.remove('hidden-chapter');
-            recall.classList.add('active-chapter');
+            if (recall) {
+                recall.classList.remove('hidden-chapter');
+                recall.classList.add('active-chapter');
+            }
 
             // Nav State
             document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
@@ -1348,20 +1573,16 @@
             body.style.fontSize = newSize + 'px';
         }
 
-        /* --- ACTIVE RECALL LOGIC --- */
-        
         function loadRecallPrompts() {
             const chapterId = document.getElementById('recall-select').value;
             const container = document.getElementById('recall-container');
-            container.innerHTML = ''; // Clear current
+            container.innerHTML = ''; 
 
             if (!chapterId) return;
 
-            // Find the actual chapter content in the DOM
             const sourceChapter = document.getElementById(chapterId);
             if (!sourceChapter) return;
 
-            // 1. Find Part 1 Definitions
             const definitions = sourceChapter.querySelectorAll('.term, .definition-term');
             if (definitions.length > 0) {
                 const h2 = document.createElement('h2');
@@ -1374,7 +1595,6 @@
                 });
             }
 
-            // 2. Find Part 2 Arguments
             const arguments = sourceChapter.querySelectorAll('.doc-subtitle, .outline-title-1');
             if (arguments.length > 0) {
                 const h2 = document.createElement('h2');
@@ -1400,11 +1620,9 @@
             textarea.placeholder = "Type what you remember here...";
             textarea.id = uniqueKey;
             
-            // Load saved data
             const savedData = localStorage.getItem(uniqueKey);
             if (savedData) textarea.value = savedData;
 
-            // Auto-save on type
             textarea.addEventListener('input', () => {
                 localStorage.setItem(uniqueKey, textarea.value);
             });
